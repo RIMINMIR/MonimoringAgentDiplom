@@ -5,7 +5,11 @@
 #ifndef ENTRY_POINTS_WINDOWS_SERVICE_H
 #define ENTRY_POINTS_WINDOWS_SERVICE_H
 
+#include "Windows.h"
+#include "winsvc.h"
+
 #include "string"
+
 namespace win_service
 {
 
@@ -15,10 +19,24 @@ namespace win_service
 void CreateWindowsService(const std::string& serviceName, const std::string& path);
 
 /// @brief запуск  службы windows
-void StartWindowsService();
+uint32_t StartWindowsService(const std::string& serviceName);
 
 /// @brief остановка windows
 void StopWindowsService();
 
+/// @brief основная функция, работающая после запуска службы
+void WINAPI ServiceMain(DWORD /*argc*/, LPSTR* /*argv*/);
+
+/// @brief основной поток работы службы
+DWORD WINAPI ServiceWorkerThread(LPVOID /*lpParam*/);
+
+/// @brief обработчик команд службе
+void WINAPI ControlHandler(DWORD request);
+
+/// @brief обновление статуса службы
+BOOL UpdateStatus();
+
+/// @brief обработка остановки службы
+void OnServiceStop();
 }
 #endif
