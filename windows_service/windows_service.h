@@ -38,5 +38,6 @@ BOOL UpdateStatus();
 
 /// @brief обработка остановки службы
 void OnServiceStop();
+
 }
 #endif

@@ -1,5 +1,5 @@
-/// @file windows_service.cpp
-/// @brief служба windows
+/// \file windows_service.cpp
+/// \brief служба windows
 
 #include "windows_service.h"
 

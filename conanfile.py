@@ -12,7 +12,8 @@ class HelloConan(ConanFile):
     requires = (
         "boost/1.72.0",
         "fmt/6.1.2",
-        "rapidjson/1.1.0"
+        "rapidjson/1.1.0",
+        "gtest/1.11.0"
     )
 
     def build(self):

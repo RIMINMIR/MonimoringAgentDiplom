@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(main CXX)
+project(windows_service CXX)
 
 set(${PROJECT_NAME}_SOURCES
     monitoring_agent.cpp
