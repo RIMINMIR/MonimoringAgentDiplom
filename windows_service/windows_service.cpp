@@ -20,16 +20,16 @@ HANDLE MainServiceThread = {};
 
 
 
-uint32_t StartWindowsService(const std::string& serviceName)
+int StartWindowsService(const std::string& serviceName)
 {
     ServiceName = const_cast<LPSTR>(serviceName.c_str());
 
-     SERVICE_TABLE_ENTRY ServiceTable[1];
+     SERVICE_TABLE_ENTRYA ServiceTable[1];
 
      ServiceTable[0].lpServiceName = ServiceName;
-     ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTION)ServiceMain;
+     ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTIONA)ServiceMain;
 
-     if(!StartServiceCtrlDispatcher(ServiceTable))
+     if(!StartServiceCtrlDispatcherA(ServiceTable))
      {
         return GetLastError();
      }
@@ -42,11 +42,9 @@ void StopWindowsService()
 }
 
 
-
-
 void WINAPI ServiceMain(DWORD /*argc*/, LPSTR* /*argv*/)
 {
-    StatusHandle = RegisterServiceCtrlHandler(ServiceName, ControlHandler);
+    StatusHandle = RegisterServiceCtrlHandlerA(ServiceName, ControlHandler);
     if (!StatusHandle)
     {
         return;

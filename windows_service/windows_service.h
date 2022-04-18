@@ -19,7 +19,7 @@ namespace win_service
 void CreateWindowsService(const std::string& serviceName, const std::string& path);
 
 /// @brief запуск  службы windows
-uint32_t StartWindowsService(const std::string& serviceName);
+int StartWindowsService(const std::string& serviceName);
 
 /// @brief остановка windows
 void StopWindowsService();

@@ -1,5 +1,7 @@
 /// \file win_service_test.cpp тест работы службы windows
 
+#include <common/windows_service_data.h>
+
 #include <gtest/gtest.h>
 
 #include <Windows.h>
@@ -9,27 +11,24 @@
 
 
 /// \brief
-constexpr auto serviceName = "windows_service";
+const auto serviceName = common::windows_service_data::ServiceName;
 
 /// \brief
-constexpr LPCWSTR serviceFullname= L"windows_service.exe";
+constexpr auto serviceFullname= "windows_service.exe";
 
 constexpr auto MaxBufferSize = 2048;
 
 /// \brief
 TEST( ControlServiceTests, CreateTest )
 {
-     auto serviceManager = OpenSCManager( NULL, NULL, SC_MANAGER_CREATE_SERVICE );
+     auto serviceManager = OpenSCManagerA( NULL, NULL, SC_MANAGER_CREATE_SERVICE );
      ASSERT_NE( reinterpret_cast<uint64_t*> (serviceManager), nullptr );
      EXPECT_EQ( static_cast<uint64_t> (GetLastError()), 0 );
 
-     auto buffer = std::make_unique<TCHAR[]>(MaxBufferSize);
-     EXPECT_EQ( static_cast<uint64_t> (GetLastError()), 0 );
-     GetCurrentDirectory( MaxBufferSize, buffer.get() );
-     std::wstring servicePath =  (wchar_t*)buffer.get() ;
-     servicePath += L"\\";
+     std::string servicePath = CMAKE_BINPATH;
+     servicePath += "/windows_service/bin/";
      servicePath += serviceFullname;
-     std::string path = {servicePath.begin(), servicePath.end()};
+
      SC_HANDLE service = CreateServiceA
      (
           serviceManager,
@@ -39,7 +38,7 @@ TEST( ControlServiceTests, CreateTest )
           SERVICE_WIN32_OWN_PROCESS,
           SERVICE_DEMAND_START,
           SERVICE_ERROR_NORMAL,
-          path.c_str(),
+          servicePath.c_str(),
           NULL, NULL, NULL, "NT AUTHORITY\\NetworkService", NULL
      );
 
@@ -53,23 +52,23 @@ TEST( ControlServiceTests, CreateTest )
 /// \brief
 TEST( ControlServiceTests, StartTest )
 {
-     auto serviceManager = OpenSCManager( NULL, NULL, SC_MANAGER_CREATE_SERVICE );
+     auto serviceManager = OpenSCManagerA( NULL, NULL, SC_MANAGER_CREATE_SERVICE );
      ASSERT_NE( reinterpret_cast<uint64_t*>(serviceManager), nullptr );
      ASSERT_EQ( static_cast<uint64_t> (GetLastError()), 0 );
 
-     auto service = OpenService( serviceManager, serviceName, SERVICE_START );
+     auto service = OpenServiceA( serviceManager, serviceName, SERVICE_START );
      ASSERT_NE( reinterpret_cast<uint64_t*>(service), nullptr);
      ASSERT_EQ( static_cast<uint64_t> (GetLastError()), 0 );
 
-     ASSERT_NE( static_cast<uint64_t>(StartServiceW( service, 0, NULL )),0 );
+     ASSERT_NE( static_cast<uint64_t>(StartServiceA( service, 0, NULL )),0 );
 }
 
 TEST( ControlServiceTests, StopService )
 {
-     auto serviceManager = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS );
+     auto serviceManager = OpenSCManagerA( NULL, NULL, SC_MANAGER_ALL_ACCESS );
      ASSERT_NE( reinterpret_cast<uint64_t*>(serviceManager), nullptr );
 
-     auto service = OpenService( serviceManager, serviceName, SERVICE_STOP );
+     auto service = OpenServiceA( serviceManager, serviceName, SERVICE_STOP );
      ASSERT_NE( reinterpret_cast<uint64_t*>(service), nullptr );
 
      std::unique_ptr<SERVICE_STATUS> ServiceStatus( new SERVICE_STATUS );
@@ -82,10 +81,10 @@ TEST( ControlServiceTests, StopService )
 
 TEST( ControlServiceTests, RemoveTest )
 {
-     auto serviceManager = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS );
+     auto serviceManager = OpenSCManagerA( NULL, NULL, SC_MANAGER_ALL_ACCESS );
      ASSERT_NE( reinterpret_cast<uint64_t*>(serviceManager), nullptr );
 
-     auto service = OpenService( serviceManager, serviceName, DELETE );
+     auto service = OpenServiceA( serviceManager, serviceName, DELETE );
      ASSERT_NE( reinterpret_cast<uint64_t*>(service), nullptr );
 
      ASSERT_NE( DeleteService( service ),0 );
