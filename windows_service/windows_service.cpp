@@ -19,23 +19,27 @@ SERVICE_STATUS ServiceStatus = {};
 /// \brief Основной поток агента маниторинга
 HANDLE MainServiceThread = {};
 
+std::unique_ptr<core::Core> Core = {};
 
 
-int StartWindowsService(const std::wstring& serviceName)
+
+int StartWindowsService(const std::wstring& serviceName, std::unique_ptr<core::Core> core)
 {
 
     ServiceName = const_cast<LPWSTR>(serviceName.c_str());
 
-     SERVICE_TABLE_ENTRYW ServiceTable[1];
+    SERVICE_TABLE_ENTRYW ServiceTable[1];
 
-     ServiceTable[0].lpServiceName = ServiceName;
-     ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTIONW)ServiceMain;
+    ServiceTable[0].lpServiceName = ServiceName;
+    ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTIONW)ServiceMain;
 
-     if(!StartServiceCtrlDispatcherW(ServiceTable))
-     {
+    Core = std::move(core);
+
+    if(!StartServiceCtrlDispatcherW(ServiceTable))
+    {
         return GetLastError();
-     }
-     return 0;
+    }
+    return 0;
 }
 
 void StopWindowsService()
@@ -62,6 +66,8 @@ void WINAPI ServiceMain(DWORD /*argc*/, LPWSTR* /*argv*/)
     {
         return;
     }
+
+    Core->Run();
 
     ServiceStatus.dwCurrentState = SERVICE_RUNNING;
     if(!UpdateStatus())
@@ -114,10 +120,11 @@ BOOL UpdateStatus()
 
 void OnServiceStop()
 {
-     CloseHandle(MainServiceThread);
-     ServiceStatus.dwWin32ExitCode = 0;
-     ServiceStatus.dwCurrentState = SERVICE_STOPPED;
-     UpdateStatus();
+    Core->Stop();
+    CloseHandle(MainServiceThread);
+    ServiceStatus.dwWin32ExitCode = 0;
+    ServiceStatus.dwCurrentState = SERVICE_STOPPED;
+    UpdateStatus();
 }
 
 }

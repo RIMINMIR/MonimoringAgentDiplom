@@ -12,13 +12,13 @@ namespace core
 struct Core
 {
     /// \brief запуск ядра службы
-    virtual ~Core();
+    virtual ~Core() = default;
 
     /// \brief запуск ядра службы
-    virtual void Run();
+    virtual void Run() = 0;
 
     /// \brief остановка ядра службы
-    virtual void Stop();
+    virtual void Stop() = 0;
 };
 
 }

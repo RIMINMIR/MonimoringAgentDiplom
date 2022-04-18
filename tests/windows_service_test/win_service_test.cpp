@@ -15,7 +15,7 @@
 const LPCWSTR serviceName = common::windows_service_data::ServiceName;
 
 /// \brief
-constexpr auto serviceFullname= "windows_service.exe";
+constexpr auto serviceFullname= u8"windows_service.exe";
 
 constexpr auto MaxBufferSize = 2048;
 
@@ -27,7 +27,7 @@ TEST( ControlServiceTests, CreateTest )
      EXPECT_EQ( static_cast<uint64_t> (GetLastError()), 0 );
 
      std::string servicePath = CMAKE_BINPATH;
-     servicePath += "/windows_service/bin/";
+     servicePath += u8"/windows_service/bin/";
      servicePath += serviceFullname;
      auto wpath = common::encoding_helper::s2ws(servicePath);
 

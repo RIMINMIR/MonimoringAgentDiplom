@@ -20,7 +20,7 @@ std::string ws2s(const std::wstring &ws)
 std::wstring s2ws(const std::string &s)
 {
     std::wstring temp = {};
-    Poco::UnicodeConverter::toUTF16(s, temp);
+    Poco::UnicodeConverter::convert(s, temp);
     return temp;
 }
 

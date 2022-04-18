@@ -12,5 +12,8 @@
 /// @param argv входные аргументы
 int main(uint32_t argc, char *argv[])
 {
-    return win_service::StartWindowsService(common::windows_service_data::ServiceName);
+    common::CoreContent content = {};
+    auto corePtr = factory::GetCore(content);
+
+    return win_service::StartWindowsService(common::windows_service_data::ServiceName, std::move(corePtr));
 }

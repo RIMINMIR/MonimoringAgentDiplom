@@ -3,6 +3,7 @@ project(core CXX)
 
 set(${PROJECT_NAME}_SOURCES
     impl/core_impl.cpp
+    interface_factory.cpp
     )
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
