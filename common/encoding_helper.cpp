@@ -10,14 +10,14 @@ namespace common
 namespace encoding_helper
 {
 
-std::string ws2s(std::wstring &ws)
+std::string ws2s(const std::wstring &ws)
 {
     std::string temp = {};
     Poco::UnicodeConverter::toUTF8(ws, temp);
     return temp;
 }
 
-std::wstring s2ws(std::string &s)
+std::wstring s2ws(const std::string &s)
 {
     std::wstring temp = {};
     Poco::UnicodeConverter::toUTF16(s, temp);

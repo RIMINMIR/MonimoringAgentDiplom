@@ -14,11 +14,11 @@ namespace encoding_helper
 
 /// \brief функция перевода из wstring в string
 /// \param ws строка  в формате wstring
-std::string ws2s(std::wstring &ws);
+std::string ws2s(const std::wstring &ws);
 
 /// \brief функция перевода из string в wstring
 /// \param ws строка  в формате string
-std::wstring s2ws(std::string &s);
+std::wstring s2ws(const std::string &s);
 
 }
 }

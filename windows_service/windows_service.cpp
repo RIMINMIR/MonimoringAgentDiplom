@@ -2,12 +2,13 @@
 /// \brief служба windows
 
 #include "windows_service.h"
+#include <common/encoding_helper.h>
 
 namespace win_service
 {
 
 /// \brief Название службы
-LPSTR ServiceName = {};
+LPWSTR ServiceName = {};
 
 /// \brief Текущее состояние службы
 SERVICE_STATUS_HANDLE StatusHandle = {};
@@ -20,16 +21,17 @@ HANDLE MainServiceThread = {};
 
 
 
-int StartWindowsService(const std::string& serviceName)
+int StartWindowsService(const std::wstring& serviceName)
 {
-    ServiceName = const_cast<LPSTR>(serviceName.c_str());
 
-     SERVICE_TABLE_ENTRYA ServiceTable[1];
+    ServiceName = const_cast<LPWSTR>(serviceName.c_str());
+
+     SERVICE_TABLE_ENTRYW ServiceTable[1];
 
      ServiceTable[0].lpServiceName = ServiceName;
-     ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTIONA)ServiceMain;
+     ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTIONW)ServiceMain;
 
-     if(!StartServiceCtrlDispatcherA(ServiceTable))
+     if(!StartServiceCtrlDispatcherW(ServiceTable))
      {
         return GetLastError();
      }
@@ -42,9 +44,9 @@ void StopWindowsService()
 }
 
 
-void WINAPI ServiceMain(DWORD /*argc*/, LPSTR* /*argv*/)
+void WINAPI ServiceMain(DWORD /*argc*/, LPWSTR* /*argv*/)
 {
-    StatusHandle = RegisterServiceCtrlHandlerA(ServiceName, ControlHandler);
+    StatusHandle = RegisterServiceCtrlHandlerW(ServiceName, ControlHandler);
     if (!StatusHandle)
     {
         return;

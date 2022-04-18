@@ -19,13 +19,13 @@ namespace win_service
 void CreateWindowsService(const std::string& serviceName, const std::string& path);
 
 /// @brief запуск  службы windows
-int StartWindowsService(const std::string& serviceName);
+int StartWindowsService(const std::wstring& serviceName);
 
 /// @brief остановка windows
 void StopWindowsService();
 
 /// @brief основная функция, работающая после запуска службы
-void WINAPI ServiceMain(DWORD /*argc*/, LPSTR* /*argv*/);
+void WINAPI ServiceMain(DWORD /*argc*/, LPWSTR* /*argv*/);
 
 /// @brief основной поток работы службы
 DWORD WINAPI ServiceWorkerThread(LPVOID /*lpParam*/);

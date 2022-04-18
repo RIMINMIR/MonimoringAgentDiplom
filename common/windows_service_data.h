@@ -10,7 +10,7 @@ namespace common
 namespace windows_service_data
 {
 
-constexpr auto ServiceName = "WindowsMonitoringService";
+constexpr auto ServiceName = L"WindowsMonitoringService";
 
 }
 }
