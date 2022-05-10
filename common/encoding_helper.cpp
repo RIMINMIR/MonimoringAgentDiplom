@@ -2,7 +2,6 @@
 /// \brief реализация функций, переводящих кодировки юникода
 
 #include "encoding_helper.h"
-
 #include <Poco/UnicodeConverter.h>
 
 namespace common
