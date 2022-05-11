@@ -9,6 +9,9 @@
 #include <mutex>
 #include <memory>
 
+namespace common
+{
+
 /// \brief потокобезопасная очередь для работы с ней нескольких потоков
 template<typename T>
 class EventQueue
@@ -89,5 +92,7 @@ private:
     std::condition_variable  data_cond;
 
 };
+
+}
 
 #endif
