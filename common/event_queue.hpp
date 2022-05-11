@@ -8,6 +8,7 @@
 #include <queue>
 #include <mutex>
 #include <memory>
+#include <atomic>
 
 namespace common
 {
@@ -26,17 +27,8 @@ public:
     {
         std::lock_guard<std::mutex>  lk(mut);
         dataQueue.push(std::move(data));
+        stop_wait.store(false);
         data_cond.notify_one();
-    }
-
-    /// \brief ожидание и извлечение элемента из очереди
-    /// \param value ссылка на элемент
-    void WaitAndPop(T& value)
-    {
-        std::unique_lock<std::mutex>  lk(mut);
-        data_cond.wait(lk,[this]{return  !dataQueue.empty();});
-        value=std::move(dataQueue.front());
-        dataQueue.pop();
     }
 
     /// \brief ожидание и извлечение элемента из очереди
@@ -44,25 +36,10 @@ public:
     std::shared_ptr<T> WaitAndPop()
     {
         std::unique_lock<std::mutex>  lk(mut);
-        data_cond.wait(lk,[this]{return  !dataQueue.empty();});
+        data_cond.wait(lk,[this]{return  !dataQueue.empty() || StopWait.load() == true;});
         std::shared_ptr<T>  res(std::make_shared<T>(std::move(dataQueue.front())));
         dataQueue.pop();
         return  res;
-    }
-
-    /// \brief попытка извлечения элемента
-    /// \param value ссылка на элемент
-    /// \return true если удалось извлечь элемент
-    bool  TryPop(T&  value)
-    {
-        std::lock_guard<std::mutex> lk(mut);
-        if(dataQueue.empty())
-        {
-            return  false;
-        }
-        value=std::move(dataQueue.front());
-        dataQueue.pop();
-        return  true;
     }
 
     /// \brief попытка извлечения элемента
@@ -86,10 +63,19 @@ public:
         std::lock_guard<std::mutex>  lk(mut);
         return  dataQueue.empty();
     }
+
+    /// \brief остановка ожидания элементов из очереди
+    void StopWait()
+    {
+        stop_wait.store(true);
+        data_cond.notify_one();
+    }
+
 private:
     mutable  std::mutex  mut;
     std::queue<T>  dataQueue;
     std::condition_variable  data_cond;
+    std::atomic<bool> stop_wait;
 
 };
 
