@@ -6,7 +6,7 @@
 #define CORE_EVENT_CONTROLLER_H
 
 
-namespace Core
+namespace core
 {
 
 struct EventController

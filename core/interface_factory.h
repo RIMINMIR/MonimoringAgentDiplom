@@ -6,15 +6,32 @@
 #define CORE_INTERFACE_FACTORY_H
 
 #include <core/interfaces/core.h>
+#include <core/interfaces/monitoring_subsystem.h>
+#include <core/interfaces/data_collector.h>
+#include <core/interfaces/event_controller.h>
 
 #include <common/core_content.h>
 
 #include <memory>
+#include <vector>
 
 namespace factory
 {
 
+/// \brief получение интерфейса ядра
+/// \param content компоненты ядра
 std::unique_ptr<core::Core> GetCore(common::CoreContent& content);
+
+/// \brief получение сборщика данных
+std::unique_ptr<core::DataCollector> GetDataCollector();
+
+/// \brief получение сборщика данных
+std::unique_ptr<core::EventController> GetEventController();
+
+/// \brief получение подсистемы мониторинга
+/// \param collectors вектор с указаелями на сборщики данных
+std::unique_ptr<core::MonitoringSubsystem> GetEventController(std::vector<std::shared_ptr<core::DataCollector>>& collectors);
+
 
 }
 #endif

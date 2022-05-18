@@ -11,8 +11,9 @@
 #include <common/monitoring_event.h>
 
 #include <memory>
+#include <thread>
 
-namespace Core
+namespace core
 {
 
 class EventControllerImpl : public EventController
@@ -32,8 +33,12 @@ public:
     virtual void Stop() override;
 
 private:
+
     /// \brief основной поток обработки событий из очереди
-    void processEventThread();
+    void processEvent();
+
+    /// \brief поток обработки событий
+    std::thread processEventThread;
 
     /// \brief очередь событий
     std::shared_ptr<common::EventQueue<common::MonitoringEvent>> queue;

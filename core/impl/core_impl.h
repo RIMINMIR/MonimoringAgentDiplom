@@ -8,6 +8,7 @@
 #include <core/interfaces/core.h>
 
 #include <common/core_content.h>
+#include <common/event_queue.hpp>
 
 namespace core
 {
@@ -27,6 +28,9 @@ public:
 
     /// \brief остановка ядра службы
     void Stop() override;
+
+private:
+
 };
 
 }
