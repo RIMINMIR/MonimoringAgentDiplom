@@ -11,6 +11,7 @@
 #include <common/monitoring_event.h>
 
 #include <memory>
+#include <atomic>
 #include <thread>
 
 namespace core
@@ -34,14 +35,17 @@ public:
 
 private:
 
+    /// \brief флаг работы потока
+    std::atomic_bool isRunning_;
+
     /// \brief основной поток обработки событий из очереди
     void processEvent();
 
     /// \brief поток обработки событий
-    std::thread processEventThread;
+    std::thread processEventThread_;
 
     /// \brief очередь событий
-    std::shared_ptr<common::EventQueue<common::MonitoringEvent>> queue;
+    std::shared_ptr<common::EventQueue<common::MonitoringEvent>> queue_;
 };
 
 }
