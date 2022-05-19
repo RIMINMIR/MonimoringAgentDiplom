@@ -8,7 +8,7 @@
 #include <core/interfaces/core.h>
 
 #include <common/core_content.h>
-#include <common/event_queue.hpp>
+#include <common/event_queue/event_queue.hpp>
 
 namespace core
 {

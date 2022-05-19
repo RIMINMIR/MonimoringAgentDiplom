@@ -7,8 +7,8 @@
 
 #include <core/interfaces/event_controller.h>
 
-#include <common/event_queue.hpp>
-#include <common/monitoring_event.h>
+#include <common/event_queue/event_queue.hpp>
+#include <common/event_queue/monitoring_event.h>
 
 #include <memory>
 #include <atomic>

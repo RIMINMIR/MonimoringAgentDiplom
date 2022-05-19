@@ -7,8 +7,9 @@
 
 #include <core/interfaces/monitoring_subsystem.h>
 
-#include <common/event_queue.hpp>
-#include <common/monitoring_event.h>
+#include <common/event_queue/event_queue.hpp>
+#include <common/event_queue/monitoring_event.h>
+
 #include <common/monitoring_options.h>
 
 #include <memory>

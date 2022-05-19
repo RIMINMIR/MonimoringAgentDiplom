@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
-project(tests CXX)
+project(internal_storage CXX)
 
 set(${PROJECT_NAME}_SOURCES
-    win_service_test.cpp
-    ${CMAKE_SOURCE_DIR}/common/encoding_helper.cpp
+
     )
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
