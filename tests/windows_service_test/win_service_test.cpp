@@ -11,6 +11,7 @@
 #include <winsvc.h>
 
 
+
 /// \brief
 const LPCWSTR serviceName = common::windows_service_data::ServiceName;
 
