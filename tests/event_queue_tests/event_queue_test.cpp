@@ -29,10 +29,11 @@ constexpr uint32_t TestValue = 42;
 void QueuePushWithPromisethread(EventQueue<MonitoringEvent> &queue, std::promise<bool> &spPromise,
      const uint32_t threadId)
 {
-     TestEvent testData(threadId);
+     TestEvent testData = {threadId};
+     common::MonitoringEvent monitoringData = {testData};
      for (uint32_t i = 0; i <MaxThreadMessages; i++)
      {
-          queue.Push(testData);
+          queue.Push(monitoringData);
      }
      spPromise.set_value_at_thread_exit(true);
 }
@@ -41,12 +42,13 @@ void QueuePushWithPromisethread(EventQueue<MonitoringEvent> &queue, std::promise
 /// \brief функция, добавляющая элементы в очередь
 /// \param queue ссылка на очередь сообщений
 /// \param threadId номер потока
-void QueuePushthread(EventQueue<AgentEvent<uint32_t>> &queue, const uint32_t threadId)
+void QueuePushthread(EventQueue<MonitoringEvent> &queue, const uint32_t threadId)
 {
-     AgentEvent<uint32_t> testData(threadId);
+     TestEvent testData = {threadId};
+     common::MonitoringEvent monitoringData = {testData};
      for (uint32_t i = 0; i <MaxThreadMessages;i++)
      {
-          queue.Push(testData);
+          queue.Push(monitoringData);
      }
 }
 
@@ -67,7 +69,7 @@ bool CheckMap(const std::map<uint32_t, uint32_t>& messages)
 /// \brief функция, добавляющая в очередь один элемент
 /// \param queue ссылка на очередь сообщений
 /// \param data сообщение помещаемое функцией в очередь
-void OnePushThread(const AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> &queue)
+void OnePushThread(const MonitoringEvent &data, EventQueue<MonitoringEvent> &queue)
 {
      queue.Push(data);
 }
@@ -75,24 +77,25 @@ void OnePushThread(const AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint3
 /// \brief функция, ожидающая одно событие из очереди
 /// \param queue ссылка на очередь сообщений
 /// \param data сообщение загружаемое из очереди
-void WaitPopThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> &queue)
+void WaitPopThread(MonitoringEvent &data, EventQueue<MonitoringEvent> &queue)
 {
-     queue.WaitAndPop(data);
+     data = *(queue.WaitAndPop());
 }
 
 /// \brief функция, ожидающая одно событие из очереди и меняющая параметра data после завершения ожидания
 /// \param queue ссылка на очередь сообщений
 /// \param data изменяемое значение
-void WaitAndChangeThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> &queue)
+void WaitAndChangeThread(MonitoringEvent &data, EventQueue<MonitoringEvent> &queue)
 {
      queue.WaitAndPop();
-     data = AgentEvent<uint32_t>{TestValue};
+     TestEvent testEvent = {TestValue};
+     data = MonitoringEvent{testEvent};
 }
 
 /// \brief функция, ожидающая одно событие из очереди через sharedPtr
 /// \param queue ссылка на очередь сообщений
 /// \param data сообщение загружаемое из очереди
-void WaitPtrThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> &queue)
+void WaitPtrThread(MonitoringEvent &data, EventQueue<MonitoringEvent> &queue)
 {
      data = *queue.WaitAndPop();
 }
@@ -100,17 +103,19 @@ void WaitPtrThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> 
 /// \brief функция, пытающаяся получить одно событие из очереди в цикле
 /// \param queue ссылка на очередь сообщений
 /// \param data сообщение загружаемое из очереди
-void OnePopThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> &queue)
+void OnePopThread(MonitoringEvent &data, EventQueue<MonitoringEvent> &queue)
 {
-     while(!queue.TryPop(data))
+     std::shared_ptr<MonitoringEvent> temp = nullptr;
+     while(!queue.TryPop(temp))
      {
      }
+     data = *temp;
 }
 
 /// \brief функция, загружающая событие из очереди если она не пуста
 /// \param queue ссылка на очередь сообщений
 /// \param data сообщение загружаемое из очереди
-void OnePopPtrThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>> &queue)
+void OnePopPtrThread(MonitoringEvent &data, EventQueue<MonitoringEvent> &queue)
 {
      if (!queue.Empty())
      {
@@ -121,23 +126,24 @@ void OnePopPtrThread(AgentEvent<uint32_t> &data, EventQueue<AgentEvent<uint32_t>
 /// \brief Проверяет корректность выполнения метода Pop, возвращающего значение элемента
 TEST(QueueFunctionsTests, PopTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
-     AgentEvent<uint32_t> testData(TestValue);
-     AgentEvent<uint32_t> testPopData = {};
+     EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {TestValue};
+     MonitoringEvent testData(testEvent);
+     MonitoringEvent testPopData = {};
      std::thread waitingThread(OnePopThread, std::ref(testPopData), std::ref(queue));
      std::thread pushingThread(OnePushThread, std::ref(testData), std::ref(queue));
-     pushingThread.detach();
+     pushingThread.join();
      waitingThread.join();
-     ASSERT_EQ(testPopData.Load(), testData.Load());
+     ASSERT_EQ(std::get<TestEvent>(testPopData).testDigit_, std::get<TestEvent>(testData).testDigit_);
 }
 
 /// \brief Проверяет корректность выполнения метода Pop, возвращающего указатель на элемент
 TEST(QueueFunctionsTests, PopPtrTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
-
-     AgentEvent<uint32_t> testData(TestValue);
-     AgentEvent<uint32_t> testPopData = {};
+     EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {TestValue};
+     MonitoringEvent testData(testEvent);
+     MonitoringEvent testPopData = {};
 
      std::thread pushingThread(OnePushThread, std::ref(testData), std::ref(queue));
      std::thread waitingThread(OnePopPtrThread, std::ref(testPopData), std::ref(queue));
@@ -145,16 +151,16 @@ TEST(QueueFunctionsTests, PopPtrTest)
      pushingThread.detach();
      waitingThread.join();
 
-     ASSERT_EQ(testPopData.Load(), testData.Load());
+     ASSERT_EQ(std::get<TestEvent>(testPopData).testDigit_, std::get<TestEvent>(testData).testDigit_);
 }
 
 /// \brief Проверяет корректность выполнения метода WaitAndPop, возвращающего значения
 TEST(QueueFunctionsTests, WaitAndPopTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
-
-     AgentEvent<uint32_t> testData(TestValue);
-     AgentEvent<uint32_t> testPopData = {};
+     EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {TestValue};
+     MonitoringEvent testData(testEvent);
+     MonitoringEvent testPopData = {};
 
      std::thread waitingThread(WaitPopThread,std::ref(testPopData), std::ref(queue));
      std::thread pushingThread(OnePushThread, std::ref(testData), std::ref(queue));
@@ -162,16 +168,16 @@ TEST(QueueFunctionsTests, WaitAndPopTest)
      pushingThread.detach();
      waitingThread.join();
 
-     ASSERT_EQ(testPopData.Load(), testData.Load());
+     ASSERT_EQ(std::get<TestEvent>(testPopData).testDigit_, std::get<TestEvent>(testData).testDigit_);
 }
 
 /// \brief Проверяет корректность выполнения метода Pop, возвращающего указатель на элемент
 TEST(QueueFunctionsTests, WaitAndPopPtrTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
-
-     AgentEvent<uint32_t> testData(TestValue);
-     AgentEvent<uint32_t> testPopData = {};
+     EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {TestValue};
+     MonitoringEvent testData(testEvent);
+     MonitoringEvent testPopData = {};
 
      std::thread waitingThread(WaitPtrThread,std::ref(testPopData), std::ref(queue));
      std::thread pushingThread(OnePushThread, std::ref(testData), std::ref(queue));
@@ -179,18 +185,18 @@ TEST(QueueFunctionsTests, WaitAndPopPtrTest)
      pushingThread.detach();
      waitingThread.join();
 
-     ASSERT_EQ(testPopData.Load(), testData.Load());
+     ASSERT_EQ(std::get<TestEvent>(testPopData).testDigit_, std::get<TestEvent>(testData).testDigit_);
 }
 
 /// \brief Проверяет корректность выполнения метода Empty, проверяющего очередь на пустоту
 TEST(QueueFunctionsTests, EmptyTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
+     EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {TestValue};
+     MonitoringEvent testData(testEvent);
+     MonitoringEvent testPopData = {};
 
-     AgentEvent<uint32_t> testData(TestValue);
-     AgentEvent<uint32_t> testPopData = {};
-
-     ASSERT_TRUE(queue.Empty());
+     queue.Empty();
 
      std::thread pushingThread(OnePushThread, std::ref(testData), std::ref(queue));
 
@@ -201,8 +207,9 @@ TEST(QueueFunctionsTests, EmptyTest)
 /// \brief Проверяет корректность выполнения метода Size, возвращающего размер очереди
 TEST(QueueFunctionsTests, SizeTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
-     AgentEvent<uint32_t> testData(TestValue);
+     EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {TestValue};
+     MonitoringEvent testData(testEvent);
 
      ASSERT_EQ(queue.Size(), 0U);
      queue.Push(testData);
@@ -210,16 +217,16 @@ TEST(QueueFunctionsTests, SizeTest)
 }
 
 /// \brief Проверяет корректность выполнения метода StopWait, заверщающего ожидание элемента из очереди
-TEST(QueueFunctionsTests, DISABLED_StopWaitTest)
+TEST(QueueFunctionsTests, StopWaitTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
-
-     AgentEvent<uint32_t> testData(0);
-     AgentEvent<uint32_t> testPopData = {};
+    EventQueue<MonitoringEvent> queue;
+     TestEvent testEvent = {0};
+     MonitoringEvent testData(testEvent);
+     MonitoringEvent testPopData = {};
 
      std::thread pushingThread(WaitAndChangeThread, std::ref(testData), std::ref(queue));
-
-     ASSERT_EQ(*testData.Load(), 0U);
+     auto data = std::get<TestEvent>(testData);
+     ASSERT_EQ(data.testDigit_, 0U);
      std::this_thread::sleep_for(std::chrono::microseconds(100));
 
      queue.StopWait();
@@ -227,13 +234,14 @@ TEST(QueueFunctionsTests, DISABLED_StopWaitTest)
      {
           pushingThread.join();
      }
-     ASSERT_EQ(*testData.Load(), TestValue);
+     auto result = std::get<TestEvent>(testData);
+     ASSERT_EQ(result.testDigit_, TestValue);
 }
 
 /// \brief Проверяет потокобезопасность метода WaitAndPop, возвращающего указатель на значение элемента
 TEST(QueuethreadSafetyTests, WaitAndPopPtrPromiseTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
+     EventQueue<MonitoringEvent> queue;
      std::vector<std::thread> threads(MaxThreads);
 
      std::vector<std::promise<bool>> spPromises(MaxThreads);
@@ -263,7 +271,8 @@ TEST(QueuethreadSafetyTests, WaitAndPopPtrPromiseTest)
      for (uint32_t interIndex = 0; interIndex < MaxIterations; ++interIndex)
      {
           const auto testData = queue.WaitAndPop();
-          const auto threadId = *(testData ->Load());
+          auto event = std::get<TestEvent>(*testData);
+          const auto threadId = event.testDigit_;
           ++messages[threadId];
      }
 
@@ -273,7 +282,7 @@ TEST(QueuethreadSafetyTests, WaitAndPopPtrPromiseTest)
 /// \brief Проверяет потокобезопасность метода Pop возвращающего указатель на значение элемента
 TEST(QueuethreadSafetyTests, PopPtrTest)
 {
-     EventQueue<AgentEvent<uint32_t>> queue(MaxIterations);
+     EventQueue<MonitoringEvent> queue;
      std::vector<std::thread> threads(MaxThreads);
 
      constexpr auto receivedMessageCount = 0;
@@ -295,7 +304,8 @@ TEST(QueuethreadSafetyTests, PopPtrTest)
      while(!queue.Empty())
      {
           const auto data = queue.Pop();
-          const auto threadId = *(data->Load());
+          auto event = std::get<TestEvent>(*data);
+          const auto threadId = event.testDigit_;
           ++messages[threadId];
      }
 

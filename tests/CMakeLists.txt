@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(tests CXX)
 
 set(${PROJECT_NAME}_SOURCES
+    event_queue_tests/event_queue_test.cpp
     windows_service_test/win_service_test.cpp
     ${CMAKE_SOURCE_DIR}/common/encoding_helper.cpp
     )
