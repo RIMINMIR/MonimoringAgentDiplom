@@ -6,9 +6,15 @@
 #define CORE_CORE_IMPL_H
 
 #include <core/interfaces/core.h>
+#include <core/interfaces/data_collector.h>
+#include <core/interfaces/event_controller.h>
+#include <core/interfaces/monitoring_subsystem.h>
+#include <core/interfaces/storage_controller.h>
 
 #include <common/core_content.h>
 #include <common/event_queue/event_queue.hpp>
+
+#include <memory>
 
 namespace core
 {
@@ -30,6 +36,15 @@ public:
     void Stop() override;
 
 private:
+
+    /// \brief интерфейс контроллера событий
+    std::shared_ptr<EventController> eventController_;
+
+    /// \brief интерфейс подсистемы мониторинга
+    std::shared_ptr<MonitoringSubsystem> monitoringSubsystem_;
+
+    /// \brief интерфейс контроллера внутреннего хранилища
+    std::shared_ptr<StorageController> storageController_;
 
 };
 

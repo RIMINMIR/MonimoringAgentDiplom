@@ -9,6 +9,7 @@
 #include <core/interfaces/monitoring_subsystem.h>
 #include <core/interfaces/data_collector.h>
 #include <core/interfaces/event_controller.h>
+#include <core/interfaces/storage_controller.h>
 
 #include <common/core_content.h>
 
@@ -25,13 +26,15 @@ std::unique_ptr<core::Core> GetCore(common::CoreContent& content);
 /// \brief получение сборщика данных
 std::unique_ptr<core::DataCollector> GetDataCollector();
 
-/// \brief получение сборщика данных
+/// \brief получение обработчика событий
 std::unique_ptr<core::EventController> GetEventController();
 
 /// \brief получение подсистемы мониторинга
 /// \param collectors вектор с указаелями на сборщики данных
-std::unique_ptr<core::MonitoringSubsystem> GetEventController(std::vector<std::shared_ptr<core::DataCollector>>& collectors);
+std::unique_ptr<core::MonitoringSubsystem> GetMonitoringSubsystem(core::CollectorList collectors);
 
+/// \brief получение контроллера внутреннего хранилища
+std::unique_ptr<core::StorageController> GetStorageController();
 
 }
 #endif

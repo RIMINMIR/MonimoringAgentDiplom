@@ -5,6 +5,7 @@
 #ifndef CORE_EVENT_CONTROLLER_H
 #define CORE_EVENT_CONTROLLER_H
 
+#include <common/event_queue/monitoring_event.h>
 
 namespace core
 {
@@ -19,6 +20,10 @@ struct EventController
 
     /// \brief остановка контроллера событий
     virtual void Stop() = 0;
+
+    /// \brief помещение события на обработку
+    /// \param event помещаемое событие
+    virtual void PutEvent(common::MonitoringEvent& event);
 };
 
 }

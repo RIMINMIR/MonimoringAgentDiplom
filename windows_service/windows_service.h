@@ -23,9 +23,6 @@ void CreateWindowsService(const std::string& serviceName, const std::string& pat
 /// @brief запуск  службы windows
 int StartWindowsService(const std::wstring& serviceName, std::unique_ptr<core::Core> core);
 
-/// @brief остановка windows
-void StopWindowsService();
-
 /// @brief основная функция, работающая после запуска службы
 void WINAPI ServiceMain(DWORD /*argc*/, LPWSTR* /*argv*/);
 

@@ -7,6 +7,9 @@ namespace core
 {
 
 CoreImpl::CoreImpl(common::CoreContent& content)
+    : monitoringSubsystem_{content.monitoringSubsystem_}
+    , eventController_{content.eventController_}
+    , storageController_{content.storageController_}
 {
 
 }
@@ -18,12 +21,14 @@ CoreImpl::~CoreImpl()
 
 void CoreImpl::Run()
 {
-
+    monitoringSubsystem_->Run();
+    eventController_->Run();
 }
 
 void CoreImpl::Stop()
 {
-
+    monitoringSubsystem_->Stop();
+    eventController_->Stop();
 }
 
 }

@@ -23,6 +23,14 @@ void EventControllerImpl::Stop()
     processEventThread_.join();
 }
 
+void EventControllerImpl::PutEvent(common::MonitoringEvent& event)
+{
+
+    queue_->Push(event);
+
+}
+
+
 void EventControllerImpl::processEvent()
 {
 

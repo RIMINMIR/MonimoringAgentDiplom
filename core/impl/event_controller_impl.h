@@ -33,6 +33,10 @@ public:
     /// \brief остановка контроллера событий
     virtual void Stop() override;
 
+    /// \brief помещение события на обработку
+    /// \param event помещаемое событие
+    virtual void PutEvent(common::MonitoringEvent& event) override;
+
 private:
 
     /// \brief флаг работы потока

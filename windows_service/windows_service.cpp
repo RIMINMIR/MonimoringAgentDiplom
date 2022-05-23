@@ -42,12 +42,6 @@ int StartWindowsService(const std::wstring& serviceName, std::unique_ptr<core::C
     return 0;
 }
 
-void StopWindowsService()
-{
-
-}
-
-
 void WINAPI ServiceMain(DWORD /*argc*/, LPWSTR* /*argv*/)
 {
     StatusHandle = RegisterServiceCtrlHandlerW(ServiceName, ControlHandler);

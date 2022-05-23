@@ -5,7 +5,6 @@
 #ifndef CORE_MONITORUNG_SUBSYSTEM_H
 #define CORE_MONITORUNG_SUBSYSTEM_H
 
-
 namespace core
 {
 

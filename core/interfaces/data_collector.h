@@ -6,6 +6,8 @@
 #define CORE_DATA_COLLECTOR_H
 
 #include <string>
+#include <vector>
+#include <memory>
 
 namespace core
 {
@@ -18,6 +20,8 @@ struct DataCollector
     /// \brief получение данных мониторинга
     virtual std::string GetData() = 0;
 };
+
+using CollectorList = std::shared_ptr< std::vector<std::shared_ptr< core::DataCollector > > >;
 
 }
 #endif
