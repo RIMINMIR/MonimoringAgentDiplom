@@ -2,8 +2,8 @@
 /// \brief определение реализации контроллера внутреннего хранилища
 
 #pragma once
-#ifndef CORE_STORAGE_CONTROLLER_IMPL
-#define CORE_STORAGE_CONTROLLER_IMPL
+#ifndef CORE_STORAGE_CONTROLLER_IMPL_H
+#define CORE_STORAGE_CONTROLLER_IMPL_H
 
 #include <core/interfaces/storage_controller.h>
 
