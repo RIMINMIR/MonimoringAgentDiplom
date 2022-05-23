@@ -23,7 +23,7 @@ struct EventController
 
     /// \brief помещение события на обработку
     /// \param event помещаемое событие
-    virtual void PutEvent(common::MonitoringEvent& event);
+    virtual void PutEvent(common::MonitoringEvent& event) = 0;
 };
 
 }

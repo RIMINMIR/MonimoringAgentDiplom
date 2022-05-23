@@ -1,47 +1,57 @@
-/// \file storage_controller.h
-/// \brief определение интерфейса контроллера хранилища
+/// \file storage_controller_impl.h
+/// \brief определение реализации контроллера внутреннего хранилища
 
 #pragma once
-#ifndef CORE_MONITORUNG_STORAGE_CONTROLLER
-#define CORE_MONITORUNG_STORAGE_CONTROLLER
+#ifndef CORE_STORAGE_CONTROLLER_IMPL
+#define CORE_STORAGE_CONTROLLER_IMPL
 
-#include <common/monitoring_data_structures.h>
-#include <common/monitoring_options.h>
+#include <core/interfaces/storage_controller.h>
 
-#include <vector>
+#include <common/event_queue/event_queue.hpp>
+#include <common/event_queue/monitoring_event.h>
+
+#include <memory>
+#include <atomic>
+#include <thread>
 
 namespace core
 {
 
-struct StorageController
+class StorageControllerImpl : public StorageController
 {
-    /// \brief деструктор подсистемы монитоинга
-    virtual ~StorageController() = default;
+public:
+    /// \brief конструктор контроллера событий
+    StorageControllerImpl();
+
+    /// \brief деструктор контроллера событий
+    ~StorageControllerImpl() override;
 
     /// \brief сохранение настроек мониторинга в хранилище
     /// \param options ссылка на помещаемые данные
-    virtual void StoreOptions(const common::MonitoringOptions& options) = 0;
+    void StoreOptions(const common::MonitoringOptions& options) override;
 
     /// \brief загрузка настроек мониторинга из хранилища
     /// \param options ссылка на загружаемые данные
-    virtual void RequestOptions(common::MonitoringOptions& options) = 0;
+    void RequestOptions(common::MonitoringOptions& options) override;
 
 
     /// \brief сохранение данных мониторинга в хранилище
     /// \param data ссылка на помещаемые данные
-    virtual void StoreMetrics(const common::MonitoringData& data) = 0;
+    void StoreMetrics(const common::MonitoringData& data) override;
 
     /// \brief сохранение вектора данных мониторинга в хранилище
     /// \param data ссылка на помещаемые данные
-    virtual void StoreMetrics(const std::vector<common::MonitoringData>& data) = 0;
+    void StoreMetrics(const std::vector<common::MonitoringData>& data) override;
 
     /// \brief выгрузка вектора данных мониторинга из хранилища с послеюущей очисткой хранилища от них
     /// \param data ссылка на вектор загружаемых данных
-    virtual void LoadMetrics(std::vector<common::MonitoringData>& data) = 0;
+    void LoadMetrics(std::vector<common::MonitoringData>& data) override;
 
     /// \brief запрос вектора данных мониторинга из хранилища
     /// \param data ссылка на вектор загружаемых данных
-    virtual void RequestMetrics(std::vector<common::MonitoringData>& data) = 0;
+    void RequestMetrics(std::vector<common::MonitoringData>& data) override;
+
+private:
 
 };
 

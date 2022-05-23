@@ -13,6 +13,10 @@
 int main(uint32_t argc, char *argv[])
 {
     common::CoreContent content = {};
+    content.eventController_ = factory::GetEventController();
+    content.storageController_ = factory::GetStorageController();
+    content.monitoringSubsystem_ = factory::GetMonitoringSubsystem();
+
     auto corePtr = factory::GetCore(content);
 
     return win_service::StartWindowsService(common::windows_service_data::ServiceName, std::move(corePtr));

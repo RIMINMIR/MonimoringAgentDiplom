@@ -21,21 +21,20 @@ class EventControllerImpl : public EventController
 {
 public:
     /// \brief конструктор контроллера событий
-    EventControllerImpl(
-        std::shared_ptr<common::EventQueue<common::MonitoringEvent>> queue);
+    EventControllerImpl();
 
     /// \brief деструктор контроллера событий
     ~EventControllerImpl() override;
 
     /// \brief запуск контроллера событий
-    virtual void Run() override;
+    void Run() override;
 
     /// \brief остановка контроллера событий
-    virtual void Stop() override;
+    void Stop() override;
 
     /// \brief помещение события на обработку
     /// \param event помещаемое событие
-    virtual void PutEvent(common::MonitoringEvent& event) override;
+    void PutEvent(common::MonitoringEvent& event) override;
 
 private:
 

@@ -23,8 +23,7 @@ class MonitoringSubsystemImpl : public MonitoringSubsystem
 {
 public:
     /// \brief конструктор контроллера событий
-    MonitoringSubsystemImpl(
-        std::shared_ptr<common::EventQueue<common::MonitoringEvent>> queue);
+    MonitoringSubsystemImpl();
 
     /// \brief деструктор контроллера событий
     ~MonitoringSubsystemImpl() override;

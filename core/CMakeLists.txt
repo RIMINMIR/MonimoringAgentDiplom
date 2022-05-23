@@ -5,6 +5,7 @@ set(${PROJECT_NAME}_SOURCES
     impl/core_impl.cpp
     impl/event_controller_impl.cpp
     impl/monitoring_subsystem_impl.cpp
+    impl/storage_controller_impl.cpp
     interface_factory.cpp
     )
 

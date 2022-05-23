@@ -6,6 +6,11 @@
 namespace core
 {
 
+MonitoringSubsystemImpl::MonitoringSubsystemImpl()
+{
+
+}
+
 MonitoringSubsystemImpl::~MonitoringSubsystemImpl()
 {
     Stop();

@@ -6,6 +6,11 @@
 namespace core
 {
 
+EventControllerImpl::EventControllerImpl()
+{
+
+}
+
 EventControllerImpl::~EventControllerImpl()
 {
     Stop();
@@ -25,11 +30,8 @@ void EventControllerImpl::Stop()
 
 void EventControllerImpl::PutEvent(common::MonitoringEvent& event)
 {
-
     queue_->Push(event);
-
 }
-
 
 void EventControllerImpl::processEvent()
 {
