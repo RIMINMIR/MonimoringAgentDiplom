@@ -42,11 +42,17 @@ private:
     /// \brief поток сбора данных
     void dataCollecting();
 
+    /// \brief поток отправки данных
+    void dataSending();
+
     /// \brief флаг работы потока
     bool isRunning_;
 
-    /// \brief поток подсистемы
-    std::thread subsystemThread_;
+    /// \brief поток сбора данных
+    std::thread collectingThread_;
+
+    /// \brief поток отправки данных
+    std::thread sendingThread_;
 
     /// \brief структура настроек мониторинга
     std::shared_ptr<common::MonitoringOptions> options_;
