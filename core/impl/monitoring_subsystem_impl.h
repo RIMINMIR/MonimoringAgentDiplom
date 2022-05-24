@@ -6,6 +6,9 @@
 #define CORE_MONITORING_SUBSYSTEM_IMPL_H
 
 #include <core/interfaces/monitoring_subsystem.h>
+#include <core/interfaces/data_collector.h>
+#include <core/interfaces/event_controller.h>
+#include <core/interfaces/data_collector.h>
 
 #include <common/event_queue/event_queue.hpp>
 #include <common/event_queue/monitoring_event.h>
@@ -23,7 +26,7 @@ class MonitoringSubsystemImpl : public MonitoringSubsystem
 {
 public:
     /// \brief конструктор контроллера событий
-    MonitoringSubsystemImpl();
+    MonitoringSubsystemImpl(std::shared_ptr<EventController> controller, CollectorList collectors);
 
     /// \brief деструктор контроллера событий
     ~MonitoringSubsystemImpl() override;
@@ -45,11 +48,14 @@ private:
     /// \brief поток подсистемы
     std::thread subsystemThread_;
 
-    /// \brief очередь событий
-    std::shared_ptr<common::EventQueue<common::MonitoringEvent>> queue_;
-
     /// \brief структура настроек мониторинга
     std::shared_ptr<common::MonitoringOptions> options_;
+
+    /// \brief вектор сборщиков данных
+    CollectorList collectors_;
+
+    /// \brief указаель на контроллер событий для отправки ему событий
+    std::shared_ptr<EventController> events_;
 
 };
 

@@ -12,10 +12,11 @@
 /// @param argv входные аргументы
 int main(uint32_t argc, char *argv[])
 {
+    auto dataCollectors = factory::GetCollectorList();
     common::CoreContent content = {};
     content.eventController_ = factory::GetEventController();
     content.storageController_ = factory::GetStorageController();
-    content.monitoringSubsystem_ = factory::GetMonitoringSubsystem();
+    content.monitoringSubsystem_ = factory::GetMonitoringSubsystem(content.eventController_, dataCollectors);
 
     auto corePtr = factory::GetCore(content);
 

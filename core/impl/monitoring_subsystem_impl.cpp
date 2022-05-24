@@ -3,10 +3,13 @@
 
 #include <core/impl/monitoring_subsystem_impl.h>
 
+#include <chrono>
+
 namespace core
 {
 
-MonitoringSubsystemImpl::MonitoringSubsystemImpl()
+MonitoringSubsystemImpl::MonitoringSubsystemImpl(std::shared_ptr<EventController> controller, CollectorList collectors)
+: events_{controller}
 {
 
 }
@@ -25,11 +28,24 @@ void MonitoringSubsystemImpl::Run()
 void MonitoringSubsystemImpl::Stop()
 {
     isRunning_ = false;
-    subsystemThread_.join();
+    if(subsystemThread_.joinable())
+    {
+        subsystemThread_.join();
+    }
 }
 
 void MonitoringSubsystemImpl::dataCollecting()
 {
+    while(isRunning_)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(options_->MonitoringPeriod_));
+
+        if(!isRunning_)
+        {
+            return;
+        }
+
+    }
 
 }
 

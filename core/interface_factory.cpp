@@ -23,9 +23,10 @@ std::unique_ptr<core::EventController> GetEventController()
     return std::move(controller);
 }
 
-std::unique_ptr<core::MonitoringSubsystem> GetMonitoringSubsystem()
+std::unique_ptr<core::MonitoringSubsystem> GetMonitoringSubsystem(std::shared_ptr<core::EventController> controller,
+    core::CollectorList collectors)
 {
-    auto subsystem = std::make_unique<core::MonitoringSubsystemImpl>();
+    auto subsystem = std::make_unique<core::MonitoringSubsystemImpl>(controller, collectors);
     return std::move(subsystem);
 }
 
@@ -33,6 +34,13 @@ std::unique_ptr<core::StorageController> GetStorageController()
 {
     auto subsystem = std::make_unique<core::StorageControllerImpl>();
     return std::move(subsystem);
+}
+
+core::CollectorList GetCollectorList()
+{
+    auto list = std::make_shared< std::vector< std::shared_ptr< core::DataCollector > > >();
+
+    return list;
 }
 
 }

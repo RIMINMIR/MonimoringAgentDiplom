@@ -25,7 +25,10 @@ void EventControllerImpl::Run()
 void EventControllerImpl::Stop()
 {
     isRunning_ = false;
-    processEventThread_.join();
+    if (processEventThread_.joinable())
+    {
+        processEventThread_.join();
+    }
 }
 
 void EventControllerImpl::PutEvent(common::MonitoringEvent& event)
