@@ -6,6 +6,7 @@
 #define COMMON_MONITORING_EVENT_H
 
 #include <variant>
+#include <string>
 
 namespace common
 {
@@ -15,7 +16,17 @@ struct TestEvent
     uint32_t testDigit_;
 };
 
-using MonitoringEvent = std::variant<TestEvent>;
+struct DataCollectEvent
+{
+    std::string stringData_;
+};
+
+
+using MonitoringEvent = std::variant
+<
+    TestEvent,
+    DataCollectEvent
+>;
 
 }
 

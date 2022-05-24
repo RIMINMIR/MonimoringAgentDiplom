@@ -2,6 +2,7 @@
 /// \brief реализация подсистемы мониторинга
 
 #include <core/impl/monitoring_subsystem_impl.h>
+#include <common/event_queue/monitoring_event.h>
 
 #include <chrono>
 
@@ -50,6 +51,15 @@ void MonitoringSubsystemImpl::dataCollecting()
             return;
         }
 
+        for(auto collector:*collectors_)
+        {
+            auto subsystemData = collector->GetData();
+            common::DataCollectEvent dataEvent = {};
+            dataEvent.stringData_ = subsystemData;
+            common::MonitoringEvent queueEvent = {dataEvent};
+
+            events_->PutEvent(queueEvent);
+        }
     }
 
 }
