@@ -10,6 +10,7 @@
 #include <core/interfaces/event_controller.h>
 #include <core/interfaces/monitoring_subsystem.h>
 #include <core/interfaces/storage_controller.h>
+#include <core/impl/transport_subsystem_impl.h>
 
 #include <common/core_content.h>
 #include <common/event_queue/event_queue.hpp>
@@ -46,6 +47,8 @@ private:
     /// \brief интерфейс контроллера внутреннего хранилища
     std::shared_ptr<StorageController> storageController_;
 
+    /// \brief интерфейс контроллера внутреннего хранилища
+    std::shared_ptr<TransportSubsystem> transportSubsystem_;
 };
 
 }

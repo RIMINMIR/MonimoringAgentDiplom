@@ -10,6 +10,7 @@
 #include <core/interfaces/data_collector.h>
 #include <core/interfaces/event_controller.h>
 #include <core/interfaces/storage_controller.h>
+#include <core/interfaces/transport_subsystem.h>
 
 #include <common/core_content.h>
 
@@ -36,6 +37,9 @@ std::unique_ptr<core::MonitoringSubsystem> GetMonitoringSubsystem(std::shared_pt
 
 /// \brief получение контроллера внутреннего хранилища
 std::unique_ptr<core::StorageController> GetStorageController();
+
+/// \brief получение контроллера внутреннего хранилища
+std::unique_ptr<core::TransportSubsystem> GetTransportSubsystem(std::shared_ptr<core::StorageController> storage);
 
 /// \brief получение вектора сборщиков данных
 core::CollectorList GetCollectorList();

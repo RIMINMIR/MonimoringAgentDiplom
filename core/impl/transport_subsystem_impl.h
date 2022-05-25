@@ -7,6 +7,12 @@
 
 #include <core/interfaces/transport_subsystem.h>
 
+#include <thread>
+#include <memory>
+#include <common/monitoring_options.h>
+#include <core/interfaces/storage_controller.h>
+#include <core/interfaces/event_controller.h>
+
 namespace core
 {
 
@@ -14,24 +20,44 @@ class TransportSubsystemImpl : public TransportSubsystem
 {
 public:
     /// \brief конструктор контроллера событий
-    TransportSubsystemImpl();
+    TransportSubsystemImpl(std::shared_ptr<StorageController> storage);
 
     /// \brief деструктор контроллера событий
     ~TransportSubsystemImpl() override;
 
-    /// \brief отправка собранных данных на сервера мониторинга
-    /// \param data вектор с собранными метриками
-    virtual void SendMonitoringData(std::vector<common::MonitoringData>& data) override;
+    /// \brief запуск контроллера событий
+    void Run() override;
+
+    /// \brief остановка контроллера событий
+    void Stop() override;
 
     /// \brief отправка произошедшего события на сервер мониторинга
     /// \param event событие, отправка которого необходима
     virtual void SendMonitoringEvent(common::MonitoringEvent& event) override;
 
-private:
+    /// \brief отправка собранных данных на сервера мониторинга
+    /// \param data вектор с собранными метриками
+    virtual void SendMonitoringData(std::vector<common::MonitoringData>& data) override;
 
+private:
+    /// \brief поток сбора данных
+    void dataSending();
+
+    /// \brief флаг работы потока
+    bool isRunning_;
+
+    /// \brief поток сбора данных
+    std::thread sendingThread_;
+
+    /// \brief структура настроек мониторинга
+    std::shared_ptr<common::MonitoringOptions> options_;
+
+    /// \brief контроллер внутреннего хранилища
+    std::shared_ptr<StorageController> storage_;
 
 };
 
 }
 
 #endif
+

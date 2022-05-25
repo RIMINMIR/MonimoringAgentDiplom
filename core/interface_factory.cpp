@@ -7,6 +7,7 @@
 #include <core/impl/event_controller_impl.h>
 #include <core/impl/monitoring_subsystem_impl.h>
 #include <core/impl/storage_controller_impl.h>
+#include <core/impl/transport_subsystem_impl.h>
 
 namespace factory
 {
@@ -33,6 +34,12 @@ std::unique_ptr<core::MonitoringSubsystem> GetMonitoringSubsystem(std::shared_pt
 std::unique_ptr<core::StorageController> GetStorageController()
 {
     auto subsystem = std::make_unique<core::StorageControllerImpl>();
+    return std::move(subsystem);
+}
+
+std::unique_ptr<core::TransportSubsystem> GetTransportSubsystem(std::shared_ptr<core::StorageController> storage)
+{
+    auto subsystem = std::make_unique<core::TransportSubsystemImpl>(storage);
     return std::move(subsystem);
 }
 

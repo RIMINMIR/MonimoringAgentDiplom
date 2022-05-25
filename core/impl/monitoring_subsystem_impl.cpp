@@ -24,7 +24,6 @@ void MonitoringSubsystemImpl::Run()
 {
     isRunning_ = true;
     collectingThread_ = std::thread(&MonitoringSubsystemImpl::dataCollecting, this);
-    sendingThread_ = std::thread(&MonitoringSubsystemImpl::dataSending, this);
 }
 
 void MonitoringSubsystemImpl::Stop()
@@ -33,10 +32,6 @@ void MonitoringSubsystemImpl::Stop()
     if(collectingThread_.joinable())
     {
         collectingThread_.join();
-    }
-    if(sendingThread_.joinable())
-    {
-        sendingThread_.join();
     }
 }
 
@@ -60,21 +55,6 @@ void MonitoringSubsystemImpl::dataCollecting()
 
             events_->PutEvent(queueEvent);
         }
-    }
-
-}
-
-void MonitoringSubsystemImpl::dataSending()
-{
-    while(isRunning_)
-    {
-        std::this_thread::sleep_for(std::chrono::seconds(options_->SendingPeriod_));
-
-        if(!isRunning_)
-        {
-            return;
-        }
-
     }
 
 }

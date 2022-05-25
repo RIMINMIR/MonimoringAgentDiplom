@@ -8,6 +8,7 @@
 #include <core/interfaces/event_controller.h>
 #include <core/interfaces/monitoring_subsystem.h>
 #include <core/interfaces/storage_controller.h>
+#include <core/interfaces/transport_subsystem.h>
 
 #include <memory>
 
@@ -24,6 +25,9 @@ struct CoreContent
 
     /// \brief интерфейс контроллера внутреннего хранилища
     std::shared_ptr<core::StorageController> storageController_;
+
+    /// \brief интерфейс транспортной подсистемы
+    std::shared_ptr<core::TransportSubsystem> transportSubsystem_;
 
 };
 
