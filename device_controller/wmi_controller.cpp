@@ -72,7 +72,7 @@ std::shared_ptr<std::vector<std::string>> WmiController::Request(const std::stri
         connectToWmi(wmiNamespace);
     }
 
-    auto Request = common::encoding_helper::s2ws(fmt::format(RequestTemplate, wmiClass));
+    auto Request = common::encoding_helper::s2ws(fmt::format(RequestTemplate, wmiClass, objectField));
 
     IEnumWbemClassObject* pEnumerator = NULL;
     HRESULT hres = service_->ExecQuery(

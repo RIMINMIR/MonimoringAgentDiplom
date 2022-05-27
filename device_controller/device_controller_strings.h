@@ -9,7 +9,7 @@ namespace deviceController
 {
     constexpr auto errorText = "error";
 
-    constexpr auto RequestTemplate = "SELECT * FROM {0}";
+    constexpr auto RequestTemplate = "SELECT {1} FROM {0}";
 
 }
 
