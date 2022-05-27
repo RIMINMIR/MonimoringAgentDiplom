@@ -21,7 +21,7 @@ set(${PROJECT_NAME}_DIRS
     ${CMAKE_SOURCE_DIR}
 )
 
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LIBS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_DIRS})

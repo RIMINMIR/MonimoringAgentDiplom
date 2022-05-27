@@ -26,6 +26,22 @@ void StorageControllerImpl::RequestOptions(common::MonitoringOptions& options)
 
 }
 
+void StorageControllerImpl::StoreConnection(const common::ConnectionInfo & conection)
+{
+
+}
+
+void StorageControllerImpl::RequestConnections(std::vector<common::ConnectionInfo>& connections)
+{
+
+}
+
+void StorageControllerImpl::RemoveConnection(const common::ConnectionInfo & conection)
+{
+
+}
+
+
 void StorageControllerImpl::StoreMetrics(const common::MonitoringData& data)
 {
 

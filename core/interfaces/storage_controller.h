@@ -27,6 +27,19 @@ struct StorageController
     virtual void RequestOptions(common::MonitoringOptions& options) = 0;
 
 
+    /// \brief сохранение адреса сервера мониторинга
+    /// \param connection ссылка на данные о сервере мониторинга
+    virtual void StoreConnection(const common::ConnectionInfo & conection) = 0;
+
+    /// \brief загрузка данных о серверах мониторинга
+    /// \param connections ссылка на загружаемые данные
+    virtual void RequestConnections(std::vector<common::ConnectionInfo>& connections) = 0;
+
+     /// \brief удаление данных о сервере мониторинга из хранилища
+    /// \param connection ссылка на удаляемые даднные
+    virtual void RemoveConnection(const common::ConnectionInfo & conection) = 0;
+
+
     /// \brief сохранение данных мониторинга в хранилище
     /// \param data ссылка на помещаемые данные
     virtual void StoreMetrics(const common::MonitoringData& data) = 0;

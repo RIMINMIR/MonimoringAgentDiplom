@@ -15,7 +15,9 @@ class HelloConan(ConanFile):
         "rapidjson/1.1.0",
         "gtest/1.11.0",
         "poco/1.11.1",
-        'zlib/1.2.12'
+        'zlib/1.2.12',
+        'sqlite3/3.38.1',
+        'sqlite_orm/1.7.1'
     )
 
     def build(self):

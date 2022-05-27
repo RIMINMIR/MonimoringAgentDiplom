@@ -35,6 +35,19 @@ public:
     void RequestOptions(common::MonitoringOptions& options) override;
 
 
+    /// \brief сохранение адреса сервера мониторинга
+    /// \param connection ссылка на данные о сервере мониторинга
+    void StoreConnection(const common::ConnectionInfo & conection) override;
+
+    /// \brief загрузка данных о серверах мониторинга
+    /// \param connections ссылка на загружаемые данные
+    void RequestConnections(std::vector<common::ConnectionInfo>& connections) override;
+
+    /// \brief удаление данных о сервере мониторинга из хранилища
+    /// \param connection ссылка на удаляемые даднные
+    void RemoveConnection(const common::ConnectionInfo & conection) override;
+
+
     /// \brief сохранение данных мониторинга в хранилище
     /// \param data ссылка на помещаемые данные
     void StoreMetrics(const common::MonitoringData& data) override;
