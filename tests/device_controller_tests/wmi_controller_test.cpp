@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 
 /// \brief Тесты для проверки контроллера wmi. запрос значения, проверка что поолучен результат, проверка что он не пустой
-TEST( WmiControllerTests, DataRequest )
+TEST( WmiControllerTests, OSDataRequest )
 {
     deviceController::WmiController wmi;
 
@@ -19,3 +19,50 @@ TEST( WmiControllerTests, DataRequest )
     ASSERT_NE(result.c_str(), "");
 
 }
+
+/// \brief Тесты для проверки контроллера wmi. запрос значения, проверка что поолучен результат, проверка что он не пустой
+TEST( WmiControllerTests, TemperatureDataRequest )
+{
+    deviceController::WmiController wmi;
+
+    auto data = wmi.Request("ROOT\\CIMV2", "Win32_PerfFormattedData_Counters_ThermalZoneInformation", "Temperature");
+
+    ASSERT_GT(data->size(), 0);
+
+    auto result = data->back();
+
+    ASSERT_NE(result.c_str(), "");
+
+}
+
+/// \brief Тесты для проверки контроллера wmi. запрос значения, проверка что поолучен результат, проверка что он не пустой
+TEST( WmiControllerTests, FreeDriveSpaceTest )
+{
+    deviceController::WmiController wmi;
+
+    auto data = wmi.Request("ROOT\\CIMV2", "Win32_LogicalDisk", "FreeSpace");
+
+    ASSERT_GT(data->size(), 0);
+
+    auto result = data->back();
+
+    ASSERT_NE(result.c_str(), "");
+
+}
+
+/// \brief Тесты для проверки контроллера wmi. запрос значения, проверка что поолучен результат, проверка что он не пустой
+TEST( WmiControllerTests, FreeVirtualMemoryTest )
+{
+    deviceController::WmiController wmi;
+
+    auto data = wmi.Request("ROOT\\CIMV2", "Win32_OperatingSystem", "FreeVirtualMemory");
+
+    ASSERT_GT(data->size(), 0);
+
+    auto result = data->back();
+
+    ASSERT_NE(result.c_str(), "");
+}
+
+
+

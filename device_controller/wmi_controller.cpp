@@ -110,11 +110,33 @@ std::shared_ptr<std::vector<std::string>> WmiController::Request(const std::stri
         // Get the value of the Name property
         hr = pclsObj->Get(common::encoding_helper::s2ws(objectField).c_str(), 0, &vtProp, 0, 0);
 
-        VariantClear(&vtProp);
+        if (vtProp.vt == VT_BSTR )
+        {
+            results->push_back( common::encoding_helper::ws2s(vtProp.bstrVal));
+        }
+        else if (vtProp.vt == VT_I8 || vtProp.vt == VT_I4 || vtProp.vt == VT_I2)
+        {
+            results->push_back( to_string(vtProp.intVal));
+        }
+         else if (vtProp.vt == VT_UI2 || vtProp.vt == VT_UI4 || vtProp.vt == VT_UI8)
+        {
+            results->push_back( to_string(vtProp.uintVal));
+        }
+         else if (vtProp.vt == VT_UI2 || vtProp.vt == VT_UI4 || vtProp.vt == VT_UI8)
+        {
+            results->push_back( to_string(vtProp.uintVal));
+        }
+         else if (vtProp.vt == VT_DECIMAL)
+        {
+            results->push_back( to_string(vtProp.fltVal));
+        }
+        else
+        {
+        }
 
-        results->push_back( common::encoding_helper::ws2s(vtProp.bstrVal));
 
         pclsObj->Release();
+        VariantClear(&vtProp);
      }
 
      return results;
