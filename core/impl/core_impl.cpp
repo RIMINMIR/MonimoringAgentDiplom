@@ -12,7 +12,13 @@ CoreImpl::CoreImpl(common::CoreContent& content)
     , storageController_{content.storageController_}
     , transportSubsystem_{content.transportSubsystem_}
 {
+    auto monitoringOptions = std::make_shared<common::MonitoringOptions>();
+    monitoringOptions->MonitoringEnabled_ = true;
+    monitoringOptions->MonitoringPeriod_ = 30;
+    monitoringOptions->SendingPeriod_ = 30;
 
+    monitoringSubsystem_->SetMonitoringOptions(monitoringOptions);
+    transportSubsystem_->SetMonitoringOptions(monitoringOptions);
 }
 
 CoreImpl::~CoreImpl()

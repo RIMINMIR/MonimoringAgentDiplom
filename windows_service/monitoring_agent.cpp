@@ -16,7 +16,7 @@ int main(uint32_t argc, char *argv[])
     common::CoreContent content = {};
     content.eventController_ = factory::GetEventController();
     content.storageController_ = factory::GetStorageController();
-    content.monitoringSubsystem_ = factory::GetMonitoringSubsystem(content.eventController_, dataCollectors);
+    content.monitoringSubsystem_ = factory::GetMonitoringSubsystem(content.eventController_, dataCollectors, content.storageController_);
     content.transportSubsystem_ = factory::GetTransportSubsystem(content.storageController_);
 
     auto corePtr = factory::GetCore(content);

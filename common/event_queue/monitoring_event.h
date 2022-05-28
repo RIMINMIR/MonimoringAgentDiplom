@@ -21,11 +21,17 @@ struct DataCollectEvent
     std::string stringData_;
 };
 
+struct NotNormalMetricEvent
+{
+    std::string stringData_;
+};
+
 
 using MonitoringEvent = std::variant
 <
     TestEvent,
-    DataCollectEvent
+    DataCollectEvent,
+    NotNormalMetricEvent
 >;
 
 }

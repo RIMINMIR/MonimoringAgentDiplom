@@ -7,8 +7,10 @@
 
 #include <common/monitoring_data_structures.h>
 #include <common/event_queue/monitoring_event.h>
+#include <common/monitoring_options.h>
 
 #include <vector>
+#include <memory>
 
 namespace core
 {
@@ -23,6 +25,9 @@ struct TransportSubsystem
 
     /// \brief остановка транспортной подсистемы
     virtual void Stop() = 0;
+
+    /// \brief устанвка настроек мониторинга
+    virtual void SetMonitoringOptions(const std::shared_ptr<common::MonitoringOptions> options) = 0;
 
     /// \brief отправка собранных данных на сервера мониторинга
     /// \param data вектор с собранными метриками

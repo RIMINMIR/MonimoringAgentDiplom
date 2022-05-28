@@ -31,6 +31,9 @@ public:
     /// \brief остановка контроллера событий
     void Stop() override;
 
+    /// \brief установка настроек мониторинга
+    void SetMonitoringOptions(const std::shared_ptr<common::MonitoringOptions> options) override;
+
     /// \brief отправка произошедшего события на сервер мониторинга
     /// \param event событие, отправка которого необходима
     virtual void SendMonitoringEvent(common::MonitoringEvent& event) override;

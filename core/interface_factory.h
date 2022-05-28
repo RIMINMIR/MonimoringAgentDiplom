@@ -33,7 +33,7 @@ std::unique_ptr<core::EventController> GetEventController();
 /// \brief получение подсистемы мониторинга
 /// \param collectors вектор с указаелями на сборщики данных
 std::unique_ptr<core::MonitoringSubsystem> GetMonitoringSubsystem(std::shared_ptr<core::EventController> controller,
-    core::CollectorList collectors);
+    core::CollectorList collectors, std::shared_ptr<core::StorageController> storage);
 
 /// \brief получение контроллера внутреннего хранилища
 std::unique_ptr<core::StorageController> GetStorageController();

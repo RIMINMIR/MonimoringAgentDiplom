@@ -9,6 +9,7 @@
 #include <core/interfaces/data_collector.h>
 #include <core/interfaces/event_controller.h>
 #include <core/interfaces/data_collector.h>
+#include <core/interfaces/storage_controller.h>
 
 #include <common/event_queue/event_queue.hpp>
 #include <common/event_queue/monitoring_event.h>
@@ -18,6 +19,8 @@
 #include <memory>
 #include <vector>
 #include <thread>
+#include <condition_variable>
+#include <mutex>
 
 namespace core
 {
@@ -26,7 +29,8 @@ class MonitoringSubsystemImpl : public MonitoringSubsystem
 {
 public:
     /// \brief конструктор контроллера событий
-    MonitoringSubsystemImpl(std::shared_ptr<EventController> controller, CollectorList collectors);
+    MonitoringSubsystemImpl(std::shared_ptr<EventController> controller, CollectorList collectors,
+        std::shared_ptr<core::StorageController> storage);
 
     /// \brief деструктор контроллера событий
     ~MonitoringSubsystemImpl() override;
@@ -36,6 +40,9 @@ public:
 
     /// \brief остановка контроллера событий
     void Stop() override;
+
+    /// \brief установка настроек мониторинга
+    void SetMonitoringOptions(const std::shared_ptr<common::MonitoringOptions> options) override;
 
 private:
 
@@ -56,6 +63,13 @@ private:
 
     /// \brief указаель на контроллер событий для отправки ему событий
     std::shared_ptr<EventController> events_;
+
+    /// \brief указаель на контроллер внутреннего хранилища для помещения в него собранных данных
+    std::shared_ptr<core::StorageController> storage_;
+
+    std::condition_variable threadActivated_;
+
+    std::mutex mutexLock_;
 
 };
 

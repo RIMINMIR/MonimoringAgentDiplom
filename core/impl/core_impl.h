@@ -49,6 +49,10 @@ private:
 
     /// \brief интерфейс контроллера внутреннего хранилища
     std::shared_ptr<TransportSubsystem> transportSubsystem_;
+
+    /// \brief указатель на структуру настроек мониторинга
+    std::shared_ptr<common::MonitoringOptions> monitoringOptions_;
+
 };
 
 }

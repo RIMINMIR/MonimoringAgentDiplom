@@ -33,6 +33,11 @@ void TransportSubsystemImpl::Stop()
     }
 }
 
+void TransportSubsystemImpl::SetMonitoringOptions(const std::shared_ptr<common::MonitoringOptions> options)
+{
+    options_ = options;
+}
+
 void TransportSubsystemImpl::SendMonitoringEvent(common::MonitoringEvent& event)
 {
 

@@ -5,12 +5,17 @@
 #include <common/event_queue/monitoring_event.h>
 
 #include <chrono>
+#include <ctime>
+
+
 
 namespace core
 {
 
-MonitoringSubsystemImpl::MonitoringSubsystemImpl(std::shared_ptr<EventController> controller, CollectorList collectors)
+MonitoringSubsystemImpl::MonitoringSubsystemImpl(std::shared_ptr<EventController> controller, CollectorList collectors,
+    std::shared_ptr<core::StorageController> storage)
 : events_{controller}
+, storage_{storage}
 {
 
 }
@@ -29,32 +34,55 @@ void MonitoringSubsystemImpl::Run()
 void MonitoringSubsystemImpl::Stop()
 {
     isRunning_ = false;
+    threadActivated_.notify_one();
     if(collectingThread_.joinable())
     {
         collectingThread_.join();
     }
 }
 
+void MonitoringSubsystemImpl::SetMonitoringOptions(const std::shared_ptr<common::MonitoringOptions> options)
+{
+    options_ = options;
+}
+
 void MonitoringSubsystemImpl::dataCollecting()
 {
     while(isRunning_)
     {
-        std::this_thread::sleep_for(std::chrono::seconds(options_->MonitoringPeriod_));
+        std::unique_lock lk(mutexLock_);
+        threadActivated_.wait_for(lk, std::chrono::seconds(options_->MonitoringPeriod_));
 
         if(!isRunning_)
         {
             return;
         }
-
+        std::vector<common::MonitoringData> dataVector = {};
         for(auto collector:*collectors_)
         {
-            auto subsystemData = collector->GetData();
-            common::DataCollectEvent dataEvent = {};
-            dataEvent.stringData_ = subsystemData;
-            common::MonitoringEvent queueEvent = {dataEvent};
+            deviceState::paramStates subsystemState = deviceState::Unknown;
+            auto subsystemData = collector->GetData(subsystemState);
+            if(subsystemState == deviceState::NotNormal)
+            {
+                common::NotNormalMetricEvent anomalyMetric = {subsystemData};
+                common::MonitoringEvent queueEvent = {anomalyMetric};
+                events_->PutEvent(queueEvent);
+            }
+            else if (subsystemState == deviceState::Ok)
+            {
+               common::MonitoringData dataStruct = {};
+               dataStruct.stringData_ = subsystemData;
+               dataStruct.metrincName_ = collector->GetMetricName();
+               dataStruct.date = time(NULL);
+               /// \todo доделать установку текущей даты и сбор имени метрики
 
-            events_->PutEvent(queueEvent);
+                dataVector.push_back(dataStruct);
+            }
+
+
         }
+
+        storage_->StoreMetrics(dataVector);
     }
 
 }
