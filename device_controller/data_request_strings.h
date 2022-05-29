@@ -26,6 +26,10 @@ namespace className
 
     /// \brief класс информации о температуре
     constexpr auto ThermalZoneInformation = "Win32_PerfFormattedData_Counters_ThermalZoneInformation";
+
+    /// \brief класс информации о процессоре
+    constexpr auto ProcessorInformation = "Win32_PerfFormattedData_Counters_ProcessorInformation";
+
 }
 
 
@@ -40,6 +44,9 @@ namespace fieldName
 
     /// \brief класс свободной виртуальной памяти
     constexpr auto ProcessorTemperature = "Temperature";
+
+    /// \brief нагрузка на просессор в процентах
+    constexpr auto PercentProcessorTime = "PercentProcessorTime";
 }
 
 }

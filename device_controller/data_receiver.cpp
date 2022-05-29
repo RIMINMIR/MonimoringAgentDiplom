@@ -31,4 +31,10 @@ std::shared_ptr<std::vector<std::string>> DataReceiver::GetProcessorTemperature(
     return data;
 }
 
+std::shared_ptr<std::vector<std::string>> DataReceiver::GetPercentProcessorTime()
+{
+    auto data = wmi_->Request(namespacesName::Cimv2, className::ProcessorInformation, fieldName::PercentProcessorTime);
+    return data;
+}
+
 }

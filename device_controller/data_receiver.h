@@ -32,6 +32,10 @@ public:
     /// \return вектор со строковым значением температуры процессора
     std::shared_ptr<std::vector<std::string>> GetProcessorTemperature();
 
+    /// \brief запрос нагрузки на процессор в процентах
+    /// \return вектор со строковыми значениями нагрузки на процессор и его ядра
+    std::shared_ptr<std::vector<std::string>> GetPercentProcessorTime();
+
 private:
 
    std::unique_ptr<WmiController> wmi_;
