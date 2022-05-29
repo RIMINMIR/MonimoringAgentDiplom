@@ -113,7 +113,12 @@ std::shared_ptr<std::vector<std::string>> WmiController::Request(const std::stri
 
         if (vtProp.vt == VT_BSTR )
         {
-            results->push_back( common::encoding_helper::ws2s(vtProp.bstrVal));
+            auto temp = common::encoding_helper::ws2s(vtProp.bstrVal);
+            if(temp.back() == '\0')
+            {
+                temp.pop_back();
+            }
+            results->push_back(temp);
         }
         else if (vtProp.vt == VT_I8 || vtProp.vt == VT_I4 || vtProp.vt == VT_I2)
         {
