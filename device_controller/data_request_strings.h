@@ -46,6 +46,9 @@ namespace fieldName
 
     /// \brief нагрузка на просессор в процентах
     constexpr auto PercentProcessorTime = "PercentProcessorTime";
+
+    /// \brief имя устройства
+    constexpr auto Name = "Name";
 }
 
 }

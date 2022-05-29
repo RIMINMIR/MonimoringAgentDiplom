@@ -21,7 +21,8 @@ enum paramStates
 {
     Unknown = 0,
     Ok = 1,
-    NotNormal = 2
+    ErrorWhileCollecting = 2,
+    NotNormal = 3
 };
 
 }

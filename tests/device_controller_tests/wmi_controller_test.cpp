@@ -40,7 +40,9 @@ TEST( WmiControllerTests, FreeDriveSpaceTest )
 {
     deviceController::WmiController wmi;
 
-    auto data = wmi.Request("ROOT\\CIMV2", "Win32_LogicalDisk", "FreeSpace");
+    std::vector<std::string> arguments = {"Name", "FreeSpace"};
+
+    auto data = wmi.Request("ROOT\\CIMV2", "Win32_LogicalDisk", arguments);
 
     ASSERT_GT(data->size(), 0);
 

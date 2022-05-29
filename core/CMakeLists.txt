@@ -7,6 +7,8 @@ set(${PROJECT_NAME}_SOURCES
     impl/monitoring_subsystem_impl.cpp
     impl/storage_controller_impl.cpp
     impl/transport_subsystem_impl.cpp
+    #data collectors
+    impl/data_collectors/disk_space_collector.cpp
     interface_factory.cpp
     )
 

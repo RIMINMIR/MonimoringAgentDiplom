@@ -21,7 +21,8 @@ std::shared_ptr<std::vector<std::string>> DataReceiver::GetFreeVirtualMemory()
 
 std::shared_ptr<std::vector<std::string>> DataReceiver::GetDriveSpace()
 {
-    auto data = wmi_->Request(namespacesName::Cimv2, className::LogicalDisk, fieldName::FreeDiskSpace);
+    std::vector<std::string> arguments = {fieldName::Name, fieldName::FreeDiskSpace};
+    auto data = wmi_->Request(namespacesName::Cimv2, className::LogicalDisk, arguments);
     return data;
 }
 
