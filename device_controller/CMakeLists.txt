@@ -3,6 +3,7 @@ project(device_controller CXX)
 
 set(${PROJECT_NAME}_SOURCES
     wmi_controller.cpp
+    data_receiver.cpp
     ${CMAKE_SOURCE_DIR}/common/encoding_helper.cpp
     )
 
