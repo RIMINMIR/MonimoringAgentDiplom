@@ -67,8 +67,10 @@ private:
     /// \brief указаель на контроллер внутреннего хранилища для помещения в него собранных данных
     std::shared_ptr<core::StorageController> storage_;
 
+    /// \brief переменная для синхронизации ожидания и выхода из потока по команде
     std::condition_variable threadActivated_;
 
+    /// \brief Мьютекс для блокировки потока на ожидания
     std::mutex mutexLock_;
 
 };

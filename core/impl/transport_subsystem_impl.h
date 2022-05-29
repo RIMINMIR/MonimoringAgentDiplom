@@ -7,11 +7,14 @@
 
 #include <core/interfaces/transport_subsystem.h>
 
-#include <thread>
-#include <memory>
 #include <common/monitoring_options.h>
 #include <core/interfaces/storage_controller.h>
 #include <core/interfaces/event_controller.h>
+
+#include <thread>
+#include <memory>
+#include <mutex>
+#include <condition_variable>
 
 namespace core
 {
@@ -57,6 +60,12 @@ private:
 
     /// \brief контроллер внутреннего хранилища
     std::shared_ptr<StorageController> storage_;
+
+    /// \brief переменная для синхронизации ожидания и выхода из потока по команде
+    std::condition_variable threadActivated_;
+
+    /// \brief Мьютекс для блокировки потока на ожидания
+    std::mutex mutexLock_;
 
 };
 

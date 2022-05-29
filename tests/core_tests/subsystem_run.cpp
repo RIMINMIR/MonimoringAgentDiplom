@@ -8,37 +8,67 @@
 #include <thread>
 #include <chrono>
 
+/// \brief Время между запуском и остановкой подсистемы в милисекундах
+constexpr auto WaitTime = 200;
+
 /// \brief Тесты для проверки запуска и остановки контроллера событий
 TEST( SubsystemRunTests, EventControllerRunTest )
 {
+    auto eventController = factory::GetEventController();
 
-auto eventController = factory::GetEventController();
-
-eventController->Run();
-std::this_thread::sleep_for(std::chrono::seconds(1));
-eventController->Stop();
-
+    eventController->Run();
+    std::this_thread::sleep_for(std::chrono::microseconds(WaitTime));
+    eventController->Stop();
 }
 
 TEST( SubsystemRunTests, MonitoringSubsystemRunTest )
 {
+    auto eventController = factory::GetEventController();
 
-auto eventController = factory::GetEventController();
+    auto storageController = factory::GetStorageController();
 
-auto storageController = factory::GetStorageController();
+    auto collectors = factory::GetCollectorList();
 
-auto collectors = factory::GetCollectorList();
+    auto monitoringSys = factory::GetMonitoringSubsystem(std::move(eventController), collectors, std::move(storageController));
 
-auto monitoringSys = factory::GetMonitoringSubsystem(std::move(eventController), collectors, std::move(storageController));
+    auto monitoringOptions = std::make_shared<common::MonitoringOptions>();
+    monitoringOptions->MonitoringEnabled_ = true;
+    monitoringOptions->MonitoringPeriod_ = 30;
+    monitoringOptions->SendingPeriod_ = 30;
+    monitoringSys->SetMonitoringOptions(monitoringOptions);
 
-auto monitoringOptions = std::make_shared<common::MonitoringOptions>();
-monitoringOptions->MonitoringEnabled_ = true;
-monitoringOptions->MonitoringPeriod_ = 30;
-monitoringOptions->SendingPeriod_ = 30;
-monitoringSys->SetMonitoringOptions(monitoringOptions);
+    monitoringSys->Run();
+    std::this_thread::sleep_for(std::chrono::microseconds(WaitTime));
+    monitoringSys->Stop();
+}
 
-monitoringSys->Run();
-std::this_thread::sleep_for(std::chrono::seconds(1));
-monitoringSys->Stop();
+TEST( SubsystemRunTests, TransportSubsystemRunTest )
+{
+    auto storageController = factory::GetStorageController();
+    auto transportSubsystem = factory::GetTransportSubsystem(std::move(storageController));
+    auto monitoringOptions = std::make_shared<common::MonitoringOptions>();
+    monitoringOptions->MonitoringEnabled_ = true;
+    monitoringOptions->MonitoringPeriod_ = 30;
+    monitoringOptions->SendingPeriod_ = 30;
+    transportSubsystem->SetMonitoringOptions(monitoringOptions);
 
+    transportSubsystem->Run();
+    std::this_thread::sleep_for(std::chrono::microseconds(WaitTime));
+    transportSubsystem->Stop();
+}
+
+TEST( SubsystemRunTests, CoreRunTest )
+{
+    auto dataCollectors = factory::GetCollectorList();
+    common::CoreContent content = {};
+    content.eventController_ = factory::GetEventController();
+    content.storageController_ = factory::GetStorageController();
+    content.monitoringSubsystem_ = factory::GetMonitoringSubsystem(content.eventController_, dataCollectors, content.storageController_);
+    content.transportSubsystem_ = factory::GetTransportSubsystem(content.storageController_);
+
+    std::shared_ptr<core::Core> corePtr = factory::GetCore(content);
+
+    corePtr->Run();
+    std::this_thread::sleep_for(std::chrono::microseconds(WaitTime));
+    corePtr->Stop();
 }

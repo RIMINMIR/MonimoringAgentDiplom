@@ -27,6 +27,7 @@ void TransportSubsystemImpl::Stop()
 {
 
     isRunning_ = false;
+    threadActivated_.notify_one();
     if(sendingThread_.joinable())
     {
         sendingThread_.join();
@@ -53,7 +54,9 @@ void TransportSubsystemImpl::dataSending()
 
     while(isRunning_)
     {
-        std::this_thread::sleep_for(std::chrono::seconds(options_->SendingPeriod_));
+
+        std::unique_lock lk(mutexLock_);
+        threadActivated_.wait_for(lk, std::chrono::seconds(options_->MonitoringPeriod_));
 
         if(!isRunning_)
         {
