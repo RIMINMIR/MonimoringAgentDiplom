@@ -32,7 +32,6 @@ namespace className
 
 }
 
-
 /// \brief имена полей классов данных
 namespace fieldName
 {

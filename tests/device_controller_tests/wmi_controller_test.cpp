@@ -64,5 +64,21 @@ TEST( WmiControllerTests, FreeVirtualMemoryTest )
     ASSERT_NE(result.c_str(), "");
 }
 
+/// \brief Тесты для проверки контроллера wmi. запрос вектора значений и проверка корректности результата
+TEST( WmiControllerTests, ProcessorTimePercentTest )
+{
+    deviceController::WmiController wmi;
+
+    std::vector<std::string> arguments = {"Name", "PercentProcessorTime"};
+
+    auto data = wmi.Request("ROOT\\CIMV2", "Win32_PerfFormattedData_Counters_ProcessorInformation", arguments);
+
+    ASSERT_GT(data->size(), 0);
+
+    auto result = data->back();
+
+    ASSERT_NE(result.c_str(), "");
+}
+
 
 

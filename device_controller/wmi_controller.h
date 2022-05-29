@@ -23,8 +23,19 @@ public:
     /// \brief деструктор
     ~WmiController();
 
+    /// \brief запрос одного параметра из класса через wmi
+    /// \param wmiNamespace неймспейс в котором расположен объект данных
+    /// \param wmiClass класс из которого будут запрошены данные
+    /// \param objectField поле объекта, значение которого будет запрошено
     std::shared_ptr<std::vector<std::string>> Request(const std::string& wmiNamespace,
         const std::string& wmiClass, const std::string& objectField);
+
+    /// \brief перегрузка метода для запроса нескольких полей данных из одного объекта
+    /// \param wmiNamespace неймспейс в котором расположен объект данных
+    /// \param wmiClass класс из которого будут запрошены данные
+    /// \param objectFields вектор запрашиваемых полей данных
+    std::shared_ptr<std::vector<std::string>> Request(const std::string& wmiNamespace,
+        const std::string& wmiClass, const std::vector<std::string>& objectFields);
 
 private:
 

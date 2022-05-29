@@ -7,6 +7,7 @@
 #include <common/encoding_helper.h>
 
 #include <fmt/core.h>
+#include <boost/algorithm/string/join.hpp>
 
 #include <comdef.h>
 #include <stdexcept>
@@ -137,6 +138,110 @@ std::shared_ptr<std::vector<std::string>> WmiController::Request(const std::stri
 
         pclsObj->Release();
         VariantClear(&vtProp);
+     }
+
+     return results;
+
+}
+
+std::shared_ptr<std::vector<std::string>> WmiController::Request(const std::string& wmiNamespace,
+        const std::string& wmiClass, const std::vector<std::string>& objectFields)
+{
+    if(!wmiConnected_)
+    {
+        connectToWmi(wmiNamespace);
+    }
+
+    if(currentWmiNamespace_ != wmiNamespace)
+    {
+        disonnectWmi();
+        connectToWmi(wmiNamespace);
+    }
+
+    std::string requestedFields = boost::algorithm::join(objectFields, ",");
+
+    auto Request = common::encoding_helper::s2ws(fmt::format(RequestTemplate, wmiClass, requestedFields));
+
+    IEnumWbemClassObject* pEnumerator = NULL;
+    HRESULT hres = service_->ExecQuery(
+          bstr_t("WQL"),
+          bstr_t(Request.c_str()),
+          WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY,
+          NULL,
+          &pEnumerator);
+
+     if (FAILED(hres))
+     {
+        throw std::runtime_error(errorText);
+     }
+
+     // Step 7: -------------------------------------------------
+     // Get the data from the query in step 6 -------------------
+
+     IWbemClassObject* pclsObj = NULL;
+     ULONG uReturn = 0;
+
+    auto results = std::make_shared<std::vector<std::string>>();
+
+     while (pEnumerator)
+     {
+        HRESULT hr = pEnumerator->Next(WBEM_INFINITE, 1,
+            &pclsObj, &uReturn);
+
+        if (0 == uReturn)
+        {
+            break;
+        }
+        std::string composedData = {};
+        for(auto field:objectFields)
+          {
+            VARIANT vtProp = {};
+
+            // Get the value of the Name property
+
+            hr = pclsObj->Get(common::encoding_helper::s2ws(field).c_str(), 0, &vtProp, 0, 0);
+
+            if (vtProp.vt == VT_BSTR )
+            {
+                 auto temp = common::encoding_helper::ws2s(vtProp.bstrVal);
+                 if (temp.back() == '\0')
+                 {
+                      temp.pop_back();
+                 }
+                 temp.push_back(' ');
+                 composedData += temp;
+
+            }
+            else if (vtProp.vt == VT_I8 || vtProp.vt == VT_I4 || vtProp.vt == VT_I2)
+            {
+                composedData += to_string(vtProp.intVal) + " ";
+            }
+            else if (vtProp.vt == VT_UI2 || vtProp.vt == VT_UI4 || vtProp.vt == VT_UI8)
+            {
+                composedData += to_string(vtProp.uintVal) + " ";
+            }
+            else if (vtProp.vt == VT_UI2 || vtProp.vt == VT_UI4 || vtProp.vt == VT_UI8)
+            {
+                composedData += to_string(vtProp.uintVal) + " ";
+            }
+            else if (vtProp.vt == VT_DECIMAL)
+            {
+                composedData += to_string(vtProp.fltVal) + " ";
+            }
+            else
+            {
+            }
+            VariantClear(&vtProp);
+
+        }
+        if(composedData[composedData.size()-1] == ' ')
+        {
+            composedData.pop_back();
+        }
+        results->push_back(composedData);
+
+        pclsObj->Release();
+
      }
 
      return results;
