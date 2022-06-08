@@ -17,7 +17,7 @@ class HelloConan(ConanFile):
         "poco/1.11.1",
         'zlib/1.2.12',
         'sqlite3/3.38.1',
-        'sqlite_orm/1.7.1'
+        'soci/4.0.2'
     )
 
     def build(self):

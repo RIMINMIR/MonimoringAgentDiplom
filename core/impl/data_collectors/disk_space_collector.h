@@ -16,6 +16,8 @@ namespace core
 class DiskSpaceCollector : public DataCollector
 {
 public:
+
+    /// \todo реализовать сборщик настроек и их централизованное хранение в ядре
     /// \brief конструктор
     /// \param data указатель на wmi сборщик данных
     DiskSpaceCollector(std::shared_ptr<deviceController::DataReceiver> data, std::shared_ptr<std::vector<metricOptions::FreeDiskSpace>> diskOptions);
