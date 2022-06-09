@@ -9,8 +9,9 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 set(${PROJECT_NAME}_LIBS
-    ${CONAN_LIBS_GTEST}
-    ${CONAN_LIBS_POCO}
+    ${CONAN_LIBS_FMT}
+    ${CONAN_LIBS_SOCI}
+    ${CONAN_LIBS_SQLITE3}
 )
 
 set(PRIVATE_COMPILE_DEFINITIONS

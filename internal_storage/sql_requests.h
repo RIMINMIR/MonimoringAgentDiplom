@@ -11,7 +11,8 @@ namespace internalStorage
 namespace requests
 {
 
-
+/// \brief sql запрос создания таблицы
+constexpr auto TableCreation = u8"CREATE TABLE IF NOT EXISTS {0}({1})";
 
 }
 

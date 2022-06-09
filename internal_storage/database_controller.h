@@ -16,6 +16,9 @@ namespace internalStorage
 class DatabaseController
 {
 public:
+    /// \brief конструктор
+    DatabaseController();
+
     /// \brief проверка целостности базы данных и её таблиц
     void CheckDatabaseIntegrity();
 
@@ -26,6 +29,7 @@ public:
     void CheckDatabaseSize();
 
 private:
+
     std::unique_ptr<soci::session> base_;
 };
 

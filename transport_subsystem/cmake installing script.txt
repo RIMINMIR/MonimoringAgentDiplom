@@ -1,0 +1,43 @@
+# Функция, генерирующая файлы из thrift и добавляющая их к указанной цель сборки
+#
+# * target - Цель сборки, к которой необходимо добавить сгенерированные файлы
+# * thrift_file - файл описания thrift
+function(target_add_generated_thrift_files target thrift_file)
+    if(TARGET ${target})
+    set(MAKE_THRIFT_SOURCES_CMD "${CONAN_BIN_DIRS_THRIFT}/thrift -o ${CMAKE_SOURCE_DIR}/idl/thrift --gen cpp ${thrift_file}")
+        if(WIN32)
+            execute_process(COMMAND powershell ${MAKE_THRIFT_SOURCES_CMD})
+        elseif(UNIX)
+            execute_process(COMMAND /bin/bash -c ${MAKE_THRIFT_SOURCES_CMD})
+        else()
+            message(FATAL_ERROR "Unknown OS")
+        endif()
+        file( GLOB THRIFT_SRCS
+            "${CMAKE_SOURCE_DIR}/idl/thrift/gen-cpp/service_communication_constants.cpp"
+            "${CMAKE_SOURCE_DIR}/idl/thrift/gen-cpp/service_communication_types.cpp"
+            "${CMAKE_SOURCE_DIR}/idl/thrift/gen-cpp/ServiceCommunicationInterface.cpp"
+            )
+
+        file(GLOB THRIFT_INCLUDES ${CMAKE_SOURCE_DIR}/idl/thrift/gen-cpp/*.h)
+
+        find_program(PYTHON_EXECUTABLE
+            NAMES
+            python3
+            python
+            REQUIRED
+            )
+
+        foreach(file ${THRIFT_INCLUDES})
+            execute_process(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/patches/thrift_include.py ${file})
+            message("-- Patching thrift file: ${file}")
+        endforeach()
+
+        target_sources(${target} PRIVATE ${THRIFT_SRCS})
+
+    else()
+        message(SEND_ERROR ${target} " isn't a target")
+    endif()
+endfunction()
+
+
+target_add_generated_thrift_files(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/idl/thrift/service_communication.thrift)
