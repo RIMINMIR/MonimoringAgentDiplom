@@ -36,13 +36,13 @@ constexpr auto ServersTableFields = "Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NU
 constexpr auto MetricSettingsTableName = u8"MetricSettings";
 
 /// \brief поля таблицы серверов
-constexpr auto MetricSettingsTableFields = "ComponentId INTEGER PRIMARY KEY NOT NULL, Settings TEXT";
+constexpr auto MetricSettingsTableFields = "Id INTEGER PRIMARY KEY NOT NULL, Settings TEXT";
 
 /// \brief имя таблицы компонентов
 constexpr auto ComponentsTableName = u8"Components";
 
 /// \brief поля таблицы компонентов
-constexpr auto ComponentsTableFields = "ComponentId INTEGER PRIMARY KEY NOT NULL, ComponentName TEXT";
+constexpr auto ComponentsTableFields = "Id INTEGER PRIMARY KEY NOT NULL, ComponentName TEXT";
 
 }
 

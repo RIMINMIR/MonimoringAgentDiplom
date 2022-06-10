@@ -38,6 +38,12 @@ constexpr auto LoadMetrics = u8"SELECT StringData, Date, ComponentId from Metric
 
 /// \brief запрос метрик из таблицы
 constexpr auto SelectServers = u8"SELECT ServerAdress, Password from Servers;";
+
+/// \brief запрос компонентов из таблицы
+constexpr auto SelectComponents = u8"SELECT Id, ComponentName from Components;";
+
+/// \brief запрос настроек метрик из таблицы
+constexpr auto SelectMetricSettings = u8"SELECT Id, Settings from MetricSettings;";
 }
 
 namespace insert
@@ -55,6 +61,11 @@ constexpr auto InsertMetrics = u8"INSERT INTO Metrics(StringData, Date, Componen
 constexpr auto InsertConnections = u8"INSERT INTO Servers(ServerAdress, Password)\
  values(:adr, :pas)";
 
+/// \brief установка компонента
+constexpr auto InsertComponents = u8"INSERT INTO  Components(Id, ComponentName) values(:id, :comp);";
+
+/// \brief установка настроек метрик
+constexpr auto InsertMetricSettings = u8"INSERT INTO  MetricSettings(Id, Settings) values(:id, :set);";
 
 }
 
