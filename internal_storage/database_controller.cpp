@@ -22,35 +22,35 @@ DatabaseController::DatabaseController()
 bool DatabaseController::CheckDatabaseIntegrity()
 {
     int integrityFlag = 0;
-    std::string request = fmt::format(requests::TableNameCheck, constants::OptionsTableName);
+    std::string request = fmt::format(requests::select::TableNameCheck, constants::OptionsTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
     {
         return false;
     }
 
-    request = fmt::format(requests::TableNameCheck, constants::ComponentsTableName);
+    request = fmt::format(requests::select::TableNameCheck, constants::ComponentsTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
     {
         return false;
     }
 
-    request = fmt::format(requests::TableNameCheck, constants::ServersTableName);
+    request = fmt::format(requests::select::TableNameCheck, constants::ServersTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
     {
         return false;
     }
 
-    request = fmt::format(requests::TableNameCheck, constants::MetricTableName);
+    request = fmt::format(requests::select::TableNameCheck, constants::MetricTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
     {
         return false;
     }
 
-    request = fmt::format(requests::TableNameCheck, constants::MetricSettingsTableName);
+    request = fmt::format(requests::select::TableNameCheck, constants::MetricSettingsTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
     {
@@ -61,27 +61,29 @@ bool DatabaseController::CheckDatabaseIntegrity()
 
 void DatabaseController::CreateDatabase()
 {
-    std::string request = fmt::format(requests::TableCreation, constants::MetricTableName, constants::MetricTableFields);
+    std::string request = fmt::format(requests::create::TableCreation, constants::MetricTableName, constants::MetricTableFields);
     *base_<<request;
-    request = fmt::format(requests::TableCreation, constants::OptionsTableName, constants::OptionsTableFields);
+    request = fmt::format(requests::create::TableCreation, constants::OptionsTableName, constants::OptionsTableFields);
     *base_<<request;
-    request = fmt::format(requests::TableCreation, constants::ComponentsTableName, constants::ComponentsTableFields);
+    request = fmt::format(requests::create::TableCreation, constants::ComponentsTableName, constants::ComponentsTableFields);
     *base_<<request;
-    request = fmt::format(requests::TableCreation, constants::MetricSettingsTableName, constants::MetricSettingsTableFields);
+    request = fmt::format(requests::create::TableCreation, constants::MetricSettingsTableName, constants::MetricSettingsTableFields);
     *base_<<request;
-    request = fmt::format(requests::TableCreation, constants::ServersTableName, constants::ServersTableFields);
+    request = fmt::format(requests::create::TableCreation, constants::ServersTableName, constants::ServersTableFields);
     *base_<<request;
 }
 
 bool DatabaseController::CheckDatabaseSize()
 {
-    return true;
+    auto options = LoadMonitoringOptions();
+    auto size = GetDatabaseSize();
+    return size <= options.MaxStorageSize_;
 }
 
 uint64_t DatabaseController::GetDatabaseSize()
 {
     int size = 0;
-    std::string request = requests::GetDatabaseSize;
+    std::string request = requests::select::GetDatabaseSize;
     *base_<<request, soci::into(size);
     return size;
 }
