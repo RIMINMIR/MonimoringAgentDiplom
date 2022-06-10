@@ -68,8 +68,9 @@ void DatabaseController::StoreMetrics(const std::vector<common::MonitoringData>&
 
 }
 
-void DatabaseController::LoadMetrics(std::vector<common::MonitoringData>& data)
+std::vector<common::MonitoringData> DatabaseController::LoadMetrics()
 {
+    std::vector<common::MonitoringData> data = {};
     int storageSize = 0;
     *base_ << fmt::format(requests::select::SelectStringsCount, constants::MetricTableName), soci::into(storageSize);
     std::vector<std::string> stringData(storageSize);
@@ -87,6 +88,32 @@ void DatabaseController::LoadMetrics(std::vector<common::MonitoringData>& data)
     }
 
     *base_ << fmt::format(requests::delete_::ClearTable, constants::MetricTableName);
+    return data;
+}
+
+
+void DatabaseController::StoreConnection(const common::ConnectionInfo & conection)
+{
+    *base_ << requests::insert::InsertConnections, soci::use(conection.Hostname_), soci::use(conection.Password_);
+}
+
+std::vector<common::ConnectionInfo> DatabaseController::RequestConnections()
+{
+    std::vector<common::ConnectionInfo> data = {};
+    int storageSize = 0;
+    *base_ << fmt::format(requests::select::SelectStringsCount, constants::ServersTableName), soci::into(storageSize);
+    std::vector<std::string> adreses(storageSize);
+    std::vector<std::string> passes(storageSize);
+    *base_ << requests::select::SelectServers, soci::into(adreses), soci::into(passes);
+    for (int i =0; i < adreses.size(); i++)
+    {
+      common::ConnectionInfo tempData = {};
+      tempData.Hostname_ = adreses[i];
+      tempData.Password_ = passes[i];
+
+      data.push_back(tempData);
+    }
+    return data;
 
 }
 

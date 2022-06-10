@@ -45,10 +45,25 @@ TEST( StorageTests, StoreMetricsTest )
    metric.stringData_ = u8"320";
    std::vector<common::MonitoringData> metrics = {metric};
    controller.StoreMetrics(metrics);
-   std::vector<common::MonitoringData> results = {};
-   controller.LoadMetrics(results);
-   ASSERT_EQ(results[0].date,metric.date);
-   ASSERT_EQ(results[0].metrincName_,metric.metrincName_);
-   ASSERT_EQ(results[0].stringData_,metric.stringData_);
+   auto results = controller.LoadMetrics();
+   ASSERT_EQ(results[0].date, metric.date);
+   ASSERT_EQ(results[0].metrincName_, metric.metrincName_);
+   ASSERT_EQ(results[0].stringData_, metric.stringData_);
+
+}
+
+/// \brief проверка загрузки и выгрузки метрик
+TEST( StorageTests, StoreServers )
+{
+   internalStorage::DatabaseController controller;
+   common::ConnectionInfo server = {};
+   server.Hostname_ = u8"testname";
+   server.Password_ = u8"testPass";
+   controller.StoreConnection(server);
+   auto results = controller.RequestConnections();
+
+   ASSERT_EQ(results[0].Hostname_, server.Hostname_);
+   ASSERT_EQ(results[0].Password_, server.Password_);
+
 
 }

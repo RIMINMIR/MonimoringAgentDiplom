@@ -34,9 +34,6 @@ struct ConnectionInfo
     /// \file имя хоста
     std::string Hostname_;
 
-    /// \file номер порта
-    uint32_t PortNumber_;
-
     /// \file пароль
     std::string Password_;
 };

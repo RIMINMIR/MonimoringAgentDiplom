@@ -36,6 +36,8 @@ constexpr auto SelectStringsCount = u8"SELECT count(*) FROM {0}";
 /// \brief запрос метрик из таблицы
 constexpr auto LoadMetrics = u8"SELECT StringData, Date, ComponentId from Metrics;";
 
+/// \brief запрос метрик из таблицы
+constexpr auto SelectServers = u8"SELECT ServerAdress, Password from Servers;";
 }
 
 namespace insert
@@ -48,6 +50,10 @@ constexpr auto InsertOptions = u8"INSERT INTO MonitoringOptions(MonitoringEnable
 /// \brief установка метрик
 constexpr auto InsertMetrics = u8"INSERT INTO Metrics(StringData, Date, ComponentId)\
  values(:data, :date, :componentId)";
+
+/// \brief установка метрик
+constexpr auto InsertConnections = u8"INSERT INTO Servers(ServerAdress, Password)\
+ values(:adr, :pas)";
 
 
 }
@@ -64,6 +70,9 @@ namespace delete_
 
 /// \brief обновление существующих опций
 constexpr auto ClearTable = u8"delete from {0}";
+
+/// \brief обновление существующих опций
+constexpr auto DeleteServer = u8"DELETE FROM Servers WHERE ServerAdress = {0}";
 
 }
 

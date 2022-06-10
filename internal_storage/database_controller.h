@@ -48,7 +48,15 @@ public:
 
     /// \brief выгрузка вектора данных мониторинга из хранилища с послеюущей очисткой хранилища от них
     /// \param data ссылка на вектор загружаемых данных
-    void LoadMetrics(std::vector<common::MonitoringData>& data);
+    std::vector<common::MonitoringData> LoadMetrics();
+
+    /// \brief сохранение адреса сервера мониторинга
+    /// \param connection ссылка на данные о сервере мониторинга
+    void StoreConnection(const common::ConnectionInfo & conection);
+
+    /// \brief загрузка данных о серверах мониторинга
+    /// \param connections ссылка на загружаемые данные
+    std::vector<common::ConnectionInfo> RequestConnections();
 
 private:
 
