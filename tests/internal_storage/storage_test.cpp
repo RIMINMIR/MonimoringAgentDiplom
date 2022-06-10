@@ -9,5 +9,6 @@
 TEST( StorageTests, DatabaseCreationTest )
 {
    internalStorage::DatabaseController controller;
-   controller.CreateDatabase();
+   ASSERT_NO_THROW( controller.CreateDatabase());
+   ASSERT_TRUE(controller.CheckDatabaseIntegrity());
 }

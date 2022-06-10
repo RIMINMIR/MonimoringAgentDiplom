@@ -19,20 +19,71 @@ DatabaseController::DatabaseController()
     base_->open(soci::sqlite3, constants::StorageFileName);
 }
 
-void DatabaseController::CheckDatabaseIntegrity()
+bool DatabaseController::CheckDatabaseIntegrity()
 {
+    int integrityFlag = 0;
+    std::string request = fmt::format(requests::TableNameCheck, constants::SettingsTableName);
+    *base_<<request, soci::into(integrityFlag);
+    if(integrityFlag == 0)
+    {
+        return false;
+    }
 
+    request = fmt::format(requests::TableNameCheck, constants::ComponentsTableName);
+    *base_<<request, soci::into(integrityFlag);
+    if(integrityFlag == 0)
+    {
+        return false;
+    }
+
+    request = fmt::format(requests::TableNameCheck, constants::ServersTableName);
+    *base_<<request, soci::into(integrityFlag);
+    if(integrityFlag == 0)
+    {
+        return false;
+    }
+
+    request = fmt::format(requests::TableNameCheck, constants::MetricTableName);
+    *base_<<request, soci::into(integrityFlag);
+    if(integrityFlag == 0)
+    {
+        return false;
+    }
+
+    request = fmt::format(requests::TableNameCheck, constants::MetricSettingsTableName);
+    *base_<<request, soci::into(integrityFlag);
+    if(integrityFlag == 0)
+    {
+
+    }
+    return true;
 }
 
 void DatabaseController::CreateDatabase()
 {
-    std::string request = fmt::format(requests::TableCreation, constants::MetricSettingsTableName, constants::MetricTableFields);
+    std::string request = fmt::format(requests::TableCreation, constants::MetricTableName, constants::MetricTableFields);
+    *base_<<request;
+    request = fmt::format(requests::TableCreation, constants::SettingsTableName, constants::SettingsTableFields);
+    *base_<<request;
+    request = fmt::format(requests::TableCreation, constants::ComponentsTableName, constants::ComponentsTableFields);
+    *base_<<request;
+    request = fmt::format(requests::TableCreation, constants::MetricSettingsTableName, constants::MetricSettingsTableFields);
+    *base_<<request;
+    request = fmt::format(requests::TableCreation, constants::ServersTableName, constants::ServersTableFields);
     *base_<<request;
 }
 
-void DatabaseController::CheckDatabaseSize()
+bool DatabaseController::CheckDatabaseSize()
 {
+    return true;
+}
 
+uint64_t DatabaseController::GetDatabaseSize()
+{
+    int size = 0;
+    std::string request = requests::GetDatabaseSize;
+    *base_<<request, soci::into(size);
+    return size;
 }
 
 }

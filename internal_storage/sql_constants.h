@@ -24,16 +24,25 @@ constexpr auto MetricTableFields = u8"Id INTEGER PRIMARY KEY AUTOINCREMENT NOT N
 constexpr auto SettingsTableName = u8"MonitoringSettings";
 
 /// \brief поля таблицы настроек мониторинга
-constexpr auto SettingsTableFields = "'MonitoringEnabled' INTEGER, 'MonitoringPeriod' INTEGER, 'SendingPeriod' INTEGER";
+constexpr auto SettingsTableFields = "MonitoringEnabled INTEGER, MonitoringPeriod INTEGER, SendingPeriod INTEGER";
 
 /// \brief имя таблицы серверов
 constexpr auto ServersTableName = u8"Servers";
 
+/// \brief поля таблицы серверов
+constexpr auto ServersTableFields = "Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ServerAdress TEXT, Password TEXT";
+
 /// \brief имя таблицы настроек метрик
 constexpr auto MetricSettingsTableName = u8"MetricSettings";
 
+/// \brief поля таблицы серверов
+constexpr auto MetricSettingsTableFields = "ComponentId INTEGER PRIMARY KEY NOT NULL, Settings TEXT";
+
 /// \brief имя таблицы компонентов
 constexpr auto ComponentsTableName = u8"Components";
+
+/// \brief поля таблицы серверов
+constexpr auto ComponentsTableFields = "ComponentId INTEGER PRIMARY KEY NOT NULL, ComponentName TEXT";
 
 }
 

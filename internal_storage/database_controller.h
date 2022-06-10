@@ -20,13 +20,16 @@ public:
     DatabaseController();
 
     /// \brief проверка целостности базы данных и её таблиц
-    void CheckDatabaseIntegrity();
+    bool CheckDatabaseIntegrity();
 
     /// \brief создание базы данных и её таблиц
     void CreateDatabase();
 
     /// \brief проверка размера базы данных
-    void CheckDatabaseSize();
+    bool CheckDatabaseSize();
+
+    /// \brief запрос размера базы данных
+    uint64_t GetDatabaseSize();
 
 private:
 
@@ -37,7 +40,8 @@ private:
 
 
 /// \brief проверка целостности базы данных и её таблиц
-void CheckDatabaseIntegrity();
+/// \return true если все таблицы на месте иначе false
+bool CheckDatabaseIntegrity();
 
 /// \brief создание базы данных и её таблиц
 void CreateDatabase();
