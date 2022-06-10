@@ -70,9 +70,11 @@ void DatabaseController::StoreMetrics(const std::vector<common::MonitoringData>&
 
 void DatabaseController::LoadMetrics(std::vector<common::MonitoringData>& data)
 {
-    std::vector<std::string> stringData = {};
-    std::vector<int> date = {};
-    std::vector<int> metricId = {};
+    int storageSize = 0;
+    *base_ << fmt::format(requests::select::SelectStringsCount, constants::MetricTableName), soci::into(storageSize);
+    std::vector<std::string> stringData(storageSize);
+    std::vector<int> date(storageSize);
+    std::vector<int> metricId(storageSize);
     *base_ << requests::select::LoadMetrics, soci::into(stringData), soci::into(date), soci::into(metricId);
     for (int i =0; i < stringData.size(); i++)
     {
