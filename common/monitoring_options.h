@@ -23,6 +23,9 @@ struct MonitoringOptions
     /// \file период отправки данных
     uint32_t SendingPeriod_;
 
+    /// \file максимальный размер хранилища
+    uint32_t MaxStorageSize_;
+
 };
 
 /// \file информация о подключении к серверу

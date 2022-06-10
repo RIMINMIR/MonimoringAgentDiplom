@@ -3,6 +3,7 @@ project(internal_storage CXX)
 
 set(${PROJECT_NAME}_SOURCES
     database_controller.cpp
+    database_controller_io.cpp
     )
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)

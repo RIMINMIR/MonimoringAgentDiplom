@@ -22,7 +22,7 @@ DatabaseController::DatabaseController()
 bool DatabaseController::CheckDatabaseIntegrity()
 {
     int integrityFlag = 0;
-    std::string request = fmt::format(requests::TableNameCheck, constants::SettingsTableName);
+    std::string request = fmt::format(requests::TableNameCheck, constants::OptionsTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
     {
@@ -63,7 +63,7 @@ void DatabaseController::CreateDatabase()
 {
     std::string request = fmt::format(requests::TableCreation, constants::MetricTableName, constants::MetricTableFields);
     *base_<<request;
-    request = fmt::format(requests::TableCreation, constants::SettingsTableName, constants::SettingsTableFields);
+    request = fmt::format(requests::TableCreation, constants::OptionsTableName, constants::OptionsTableFields);
     *base_<<request;
     request = fmt::format(requests::TableCreation, constants::ComponentsTableName, constants::ComponentsTableFields);
     *base_<<request;

@@ -5,6 +5,8 @@
 #ifndef INTERNAL_STORAGE_DATABASE_CONTROLLER_H
 #define INTERNAL_STORAGE_DATABASE_CONTROLLER_H
 
+#include <common/monitoring_options.h>
+
 #include <soci/soci.h>
 
 #include <memory>
@@ -30,6 +32,14 @@ public:
 
     /// \brief запрос размера базы данных
     uint64_t GetDatabaseSize();
+
+    /// \brief запрос настроек мониторинга
+    /// \return структура с настройками из хранилища
+    common::MonitoringOptions LoadMonitoringOptions();
+
+    /// \brief загруска настроек мониторинга
+    /// \return структура с настройками из хранилища
+    void StoreMonitoringOptions(const common::MonitoringOptions& options);
 
 private:
 
