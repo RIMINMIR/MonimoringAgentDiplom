@@ -1,9 +1,9 @@
-/// \file database_controller.h
-/// \brief контроллер управляющий внутренним хранилищем
+/// \file database_io.h
+/// \brief интерфейс для ввода вывода данных в хранилище
 
 #pragma once
-#ifndef INTERNAL_STORAGE_DATABASE_CONTROLLER_H
-#define INTERNAL_STORAGE_DATABASE_CONTROLLER_H
+#ifndef INTERNAL_STORAGE_DATABASE_IO_H
+#define INTERNAL_STORAGE_DATABASE_IO_H
 
 #include <common/monitoring_options.h>
 #include <common/monitoring_data_structures.h>
@@ -16,23 +16,11 @@ namespace internalStorage
 {
 
 /// \brief класс контроллера базы данных
-class DatabaseController
+class DatabaseIo
 {
 public:
     /// \brief конструктор
-    DatabaseController();
-
-    /// \brief проверка целостности базы данных и её таблиц
-    bool CheckDatabaseIntegrity();
-
-    /// \brief создание базы данных и её таблиц
-    void CreateDatabase();
-
-    /// \brief проверка размера базы данных
-    bool CheckDatabaseSize();
-
-    /// \brief запрос размера базы данных
-    uint64_t GetDatabaseSize();
+    DatabaseIo();
 
     /// \brief запрос настроек мониторинга
     /// \return структура с настройками из хранилища

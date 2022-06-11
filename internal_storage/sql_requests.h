@@ -85,6 +85,12 @@ constexpr auto ClearTable = u8"delete from {0}";
 /// \brief обновление существующих опций
 constexpr auto DeleteServer = u8"DELETE FROM Servers WHERE ServerAdress = {0}";
 
+/// \brief обновление существующих компонентов
+constexpr auto DeleteComponent = u8"DELETE FROM Components WHERE Id= {0}";
+
+/// \brief обновление существующих настроек метрик
+constexpr auto DeleteMetricSetting = u8"DELETE FROM MetricSettings WHERE Id= {0}";
+
 }
 
 
