@@ -40,10 +40,10 @@ constexpr auto LoadMetrics = u8"SELECT StringData, Date, ComponentId from Metric
 constexpr auto SelectServers = u8"SELECT ServerAdress, Password from Servers;";
 
 /// \brief запрос компонентов из таблицы
-constexpr auto SelectComponents = u8"SELECT Id, ComponentName from Components;";
+constexpr auto SelectComponents = u8"SELECT ComponentName from Components  WHERE Id = :id;";
 
 /// \brief запрос настроек метрик из таблицы
-constexpr auto SelectMetricSettings = u8"SELECT Id, Settings from MetricSettings;";
+constexpr auto SelectMetricSettings = u8"SELECT Settings from MetricSettings WHERE Id = :id;";
 }
 
 namespace insert
@@ -86,10 +86,10 @@ constexpr auto ClearTable = u8"delete from {0}";
 constexpr auto DeleteServer = u8"DELETE FROM Servers WHERE ServerAdress = {0}";
 
 /// \brief обновление существующих компонентов
-constexpr auto DeleteComponent = u8"DELETE FROM Components WHERE Id= {0}";
+constexpr auto DeleteComponent = u8"DELETE FROM Components WHERE Id = :id";
 
 /// \brief обновление существующих настроек метрик
-constexpr auto DeleteMetricSetting = u8"DELETE FROM MetricSettings WHERE Id= {0}";
+constexpr auto DeleteMetricSetting = u8"DELETE FROM MetricSettings WHERE Id = :id";
 
 }
 

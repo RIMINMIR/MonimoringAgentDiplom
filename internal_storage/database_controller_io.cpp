@@ -117,4 +117,38 @@ std::vector<common::ConnectionInfo> DatabaseController::RequestConnections()
 
 }
 
+void DatabaseController::StoreComponent(const int& id, const std::string& componentName)
+{
+    *base_<<requests::insert::InsertComponents, soci::use(id), soci::use(componentName);
+}
+
+void DatabaseController::DeleteComponent(const int& id)
+{
+    *base_<<requests::delete_::DeleteComponent, soci::use(id);
+}
+
+std::string DatabaseController::GetComponent(const int& id)
+{
+    std::string component = {};
+    *base_<<requests::select::SelectComponents, soci::use(id), soci::into(component);
+    return component;
+}
+
+void DatabaseController::StoreMetricSettings(const int& id, const std::string& settings)
+{
+    *base_<<requests::insert::InsertMetricSettings, soci::use(id), soci::use(settings);
+}
+
+std::string DatabaseController::GetMetricSettings(const int& id)
+{
+    std::string settings = {};
+    *base_<<requests::select::SelectMetricSettings, soci::use(id), soci::into(settings);
+    return settings;
+}
+
+void DatabaseController::DeleteMetricSettings(const int& id)
+{
+    *base_<<requests::delete_::DeleteMetricSetting, soci::use(id);
+}
+
 }
