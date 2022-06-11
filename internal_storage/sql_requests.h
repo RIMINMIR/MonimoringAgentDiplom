@@ -33,6 +33,9 @@ constexpr auto SelectOptions = u8"SELECT MonitoringEnabled, MonitoringPeriod, Se
 /// \brief запрос количества записей в таблице
 constexpr auto SelectStringsCount = u8"SELECT count(*) FROM {0}";
 
+/// \brief проверка наличия записи в таблице
+constexpr auto StringCheck = u8"SELECT count(*) FROM {0} WHERE Id = {1}";
+
 /// \brief запрос метрик из таблицы
 constexpr auto LoadMetrics = u8"SELECT StringData, Date, ComponentId from Metrics;";
 
@@ -74,6 +77,12 @@ namespace update
 /// \brief обновление существующих опций
 constexpr auto UpdateOptions = u8"UPDATE MonitoringOptions SET MonitoringEnabled = :enabled, MonitoringPeriod = :monitoring,\
  SendingPeriod = :sending, MaxDatabaseSize = :size";
+
+ /// \brief обновление существующих компонентов
+constexpr auto UpdateComponents = u8"UPDATE Components SET  ComponentName = :name WHERE Id = :id";
+
+ /// \brief обновление существующих настроек метрик
+constexpr auto UpdateMetricSettings = u8"UPDATE MetricSettings SET  Settings = :name WHERE Id = :id";
 }
 
 namespace delete_

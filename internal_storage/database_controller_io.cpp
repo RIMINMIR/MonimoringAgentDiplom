@@ -119,36 +119,54 @@ std::vector<common::ConnectionInfo> DatabaseController::RequestConnections()
 
 void DatabaseController::StoreComponent(const int& id, const std::string& componentName)
 {
-    *base_<<requests::insert::InsertComponents, soci::use(id), soci::use(componentName);
+    int count = 0;
+    *base_ << fmt::format(requests::select::StringCheck, constants::ComponentsTableName, id), soci::into(count);
+    if(!count)
+    {
+        *base_ << requests::insert::InsertComponents, soci::use(id), soci::use(componentName);
+    }
+    else
+    {
+        *base_ << requests::update::UpdateComponents, soci::use(componentName), soci::use(id);
+    }
 }
 
 void DatabaseController::DeleteComponent(const int& id)
 {
-    *base_<<requests::delete_::DeleteComponent, soci::use(id);
+    *base_ << requests::delete_::DeleteComponent, soci::use(id);
 }
 
 std::string DatabaseController::GetComponent(const int& id)
 {
     std::string component = {};
-    *base_<<requests::select::SelectComponents, soci::use(id), soci::into(component);
+    *base_ << requests::select::SelectComponents, soci::use(id), soci::into(component);
     return component;
 }
 
 void DatabaseController::StoreMetricSettings(const int& id, const std::string& settings)
 {
-    *base_<<requests::insert::InsertMetricSettings, soci::use(id), soci::use(settings);
+    int count = 0;
+    *base_ << fmt::format(requests::select::StringCheck, constants::MetricSettingsTableName, id), soci::into(count);
+    if(!count)
+    {
+        *base_ << requests::insert::InsertMetricSettings, soci::use(id), soci::use(settings);
+    }
+    else
+    {
+        *base_ << requests::update::UpdateMetricSettings, soci::use(settings), soci::use(id);
+    }
 }
 
 std::string DatabaseController::GetMetricSettings(const int& id)
 {
     std::string settings = {};
-    *base_<<requests::select::SelectMetricSettings, soci::use(id), soci::into(settings);
+    *base_ << requests::select::SelectMetricSettings, soci::use(id), soci::into(settings);
     return settings;
 }
 
 void DatabaseController::DeleteMetricSettings(const int& id)
 {
-    *base_<<requests::delete_::DeleteMetricSetting, soci::use(id);
+    *base_ << requests::delete_::DeleteMetricSetting, soci::use(id);
 }
 
 }

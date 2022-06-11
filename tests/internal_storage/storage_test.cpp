@@ -73,6 +73,7 @@ TEST( StorageTests, StoreComponents )
    int id = 5;
    std::string component = "ereer";
    controller.StoreComponent(id, component);
+   controller.StoreComponent(id, component);
 
    auto results = controller.GetComponent(id);
 
@@ -90,7 +91,7 @@ TEST( StorageTests, StoreMetricSettings )
    int id = 5;
    std::string settings = "ereer";
    controller.StoreMetricSettings(id, settings);
-
+   controller.StoreMetricSettings(id, settings);
    auto results = controller.GetMetricSettings(id);
 
    ASSERT_EQ(results, settings);
