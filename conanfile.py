@@ -14,7 +14,6 @@ class MonitoringAgent(ConanFile):
         "fmt/6.1.2",
         "rapidjson/1.1.0",
         "gtest/1.11.0",
-        "poco/1.11.1",
         'zlib/1.2.12',
         'sqlite3/3.38.1',
         'soci/4.0.3',

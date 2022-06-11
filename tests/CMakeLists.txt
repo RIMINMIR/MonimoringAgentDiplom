@@ -15,7 +15,6 @@ conan_basic_setup()
 
 set(${PROJECT_NAME}_LIBS
     ${CONAN_LIBS_GTEST}
-    ${CONAN_LIBS_POCO}
     internal_storage
     device_controller
     core
