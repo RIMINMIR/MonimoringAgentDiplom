@@ -3,6 +3,10 @@
 
 #include "options_io.h"
 
+#include "rapidjson/document.h"
+
+using namespace rapidjson;
+
 
 namespace internalStorage
 {

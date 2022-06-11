@@ -6,8 +6,9 @@
 
 #include <string>
 #include <cstdint>
+#include <vector>
 
-namespace core
+namespace common
 {
 
 /// \brief структуры настроек показателей метрик
@@ -31,6 +32,16 @@ namespace metricOptions
     struct MaxProcessorTemperature
     {
         uint16_t MaxProcessorTemperature;
+    };
+
+     /// \brief общие настройки метрик
+    struct MetricSettings
+    {
+        std::vector<FreeDiskSpace> freeSpace;
+
+        FreeVirtualMemory freeMemory;
+
+        MaxProcessorTemperature maxTemperature;
     };
 
 

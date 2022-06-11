@@ -66,37 +66,19 @@ TEST( StorageTests, StoreServers )
    ASSERT_EQ(results[0].Password_, server.Password_);
 }
 
-/// \brief проверка загрузки и выгрузки компонентов
-TEST( StorageTests, StoreComponents )
-{
-   internalStorage::DatabaseController controller;
-   int id = 5;
-   std::string component = "ereer";
-   controller.StoreComponent(id, component);
-   controller.StoreComponent(id, component);
-
-   auto results = controller.GetComponent(id);
-
-   ASSERT_EQ(results, component);
-
-   controller.DeleteComponent(id);
-   results = controller.GetComponent(id);
-   ASSERT_EQ(results, "");
-}
 
 /// \brief проверка загрузки и выгрузки настроек метрик
 TEST( StorageTests, StoreMetricSettings )
 {
    internalStorage::DatabaseController controller;
-   int id = 5;
    std::string settings = "ereer";
-   controller.StoreMetricSettings(id, settings);
-   controller.StoreMetricSettings(id, settings);
-   auto results = controller.GetMetricSettings(id);
+   controller.StoreMetricSettings(settings);
+   controller.StoreMetricSettings(settings);
+   auto results = controller.GetMetricSettings();
 
    ASSERT_EQ(results, settings);
 
-   controller.DeleteMetricSettings(id);
-   results = controller.GetMetricSettings(id);
+   controller.DeleteMetricSettings();
+   results = controller.GetMetricSettings();
    ASSERT_EQ(results, "");
 }

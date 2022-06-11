@@ -7,6 +7,9 @@
 
 #include <internal_storage/database_controller.h>
 
+#include <common/metrics_qulity_options.h>
+#include <common/monitoring_options.h>
+
 namespace internalStorage
 {
 
@@ -33,7 +36,17 @@ public:
 
 private:
 
-   std::shared_ptr<DatabaseController> storage_;
+    /// \brief парсинк настроек мониторинга
+    /// \param optionsString строка с настройками в json
+    common::MonitoringOptions ParseOptions(const std::string& optionsString);
+
+    /// \brief парсинк настроек мониторинга
+    /// \param optionsString строка с настройками в json
+    common::metricOptions::MetricSettings ParseSettings(const std::string& settingsString);
+
+
+
+    std::shared_ptr<DatabaseController> storage_;
 
 };
 

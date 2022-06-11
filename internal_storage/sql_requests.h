@@ -46,7 +46,7 @@ constexpr auto SelectServers = u8"SELECT ServerAdress, Password from Servers;";
 constexpr auto SelectComponents = u8"SELECT ComponentName from Components  WHERE Id = :id;";
 
 /// \brief запрос настроек метрик из таблицы
-constexpr auto SelectMetricSettings = u8"SELECT Settings from MetricSettings WHERE Id = :id;";
+constexpr auto SelectMetricSettings = u8"SELECT Settings from MetricSettings;";
 }
 
 namespace insert
@@ -64,11 +64,8 @@ constexpr auto InsertMetrics = u8"INSERT INTO Metrics(StringData, Date, Componen
 constexpr auto InsertConnections = u8"INSERT INTO Servers(ServerAdress, Password)\
  values(:adr, :pas)";
 
-/// \brief установка компонента
-constexpr auto InsertComponents = u8"INSERT INTO  Components(Id, ComponentName) values(:id, :comp);";
-
 /// \brief установка настроек метрик
-constexpr auto InsertMetricSettings = u8"INSERT INTO  MetricSettings(Id, Settings) values(:id, :set);";
+constexpr auto InsertMetricSettings = u8"INSERT INTO  MetricSettings(Settings) values(:set);";
 
 }
 
@@ -78,11 +75,8 @@ namespace update
 constexpr auto UpdateOptions = u8"UPDATE MonitoringOptions SET MonitoringEnabled = :enabled, MonitoringPeriod = :monitoring,\
  SendingPeriod = :sending, MaxDatabaseSize = :size";
 
- /// \brief обновление существующих компонентов
-constexpr auto UpdateComponents = u8"UPDATE Components SET  ComponentName = :name WHERE Id = :id";
-
  /// \brief обновление существующих настроек метрик
-constexpr auto UpdateMetricSettings = u8"UPDATE MetricSettings SET  Settings = :name WHERE Id = :id";
+constexpr auto UpdateMetricSettings = u8"UPDATE MetricSettings SET  Settings = :name";
 }
 
 namespace delete_
@@ -93,13 +87,6 @@ constexpr auto ClearTable = u8"delete from {0}";
 
 /// \brief обновление существующих опций
 constexpr auto DeleteServer = u8"DELETE FROM Servers WHERE ServerAdress = {0}";
-
-/// \brief обновление существующих компонентов
-constexpr auto DeleteComponent = u8"DELETE FROM Components WHERE Id = :id";
-
-/// \brief обновление существующих настроек метрик
-constexpr auto DeleteMetricSetting = u8"DELETE FROM MetricSettings WHERE Id = :id";
-
 }
 
 

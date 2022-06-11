@@ -58,31 +58,17 @@ public:
     /// \param connections ссылка на загружаемые данные
     std::vector<common::ConnectionInfo> RequestConnections();
 
-    /// \brief загрузка данных о компонентах
-    /// \param componentName имя компонента
-    /// \param id идентификатор компонента
-    void StoreComponent(const int& id, const std::string& componentName);
-
-    /// \brief получение данных о компоненте
-    /// \param id идентификатор компонента
-    std::string GetComponent(const int& id);
-
-    /// \brief удаление компонента из хранилища
-    /// \param id идентификатор компонента
-    void DeleteComponent(const int& id);
-
     /// \brief настройки метрик
     /// \param settings настройки в строковом виде
-    /// \param id идентификатор компонента
-    void StoreMetricSettings(const int& id, const std::string& settings);
+    void StoreMetricSettings(const std::string& settings);
 
     /// \brief получение настроек метрик
     /// \param id идентификатор настроек метрик
-    std::string GetMetricSettings(const int& id);
+    std::string GetMetricSettings();
 
     /// \brief удаление настроек метрик из хранилища
     /// \param id идентификатор компонента
-    void DeleteMetricSettings(const int& id);
+    void DeleteMetricSettings();
 
 
 

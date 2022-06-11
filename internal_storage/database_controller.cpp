@@ -29,13 +29,6 @@ bool DatabaseController::CheckDatabaseIntegrity()
         return false;
     }
 
-    request = fmt::format(requests::select::TableNameCheck, constants::ComponentsTableName);
-    *base_<<request, soci::into(integrityFlag);
-    if(integrityFlag == 0)
-    {
-        return false;
-    }
-
     request = fmt::format(requests::select::TableNameCheck, constants::ServersTableName);
     *base_<<request, soci::into(integrityFlag);
     if(integrityFlag == 0)
@@ -64,8 +57,6 @@ void DatabaseController::CreateDatabase()
     std::string request = fmt::format(requests::create::TableCreation, constants::MetricTableName, constants::MetricTableFields);
     *base_<<request;
     request = fmt::format(requests::create::TableCreation, constants::OptionsTableName, constants::OptionsTableFields);
-    *base_<<request;
-    request = fmt::format(requests::create::TableCreation, constants::ComponentsTableName, constants::ComponentsTableFields);
     *base_<<request;
     request = fmt::format(requests::create::TableCreation, constants::MetricSettingsTableName, constants::MetricSettingsTableFields);
     *base_<<request;

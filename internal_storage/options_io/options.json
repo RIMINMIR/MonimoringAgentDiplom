@@ -1,0 +1,17 @@
+
+{
+    "MonitoringOptions":
+    {
+        "MonitoringEnabled": 1,
+        "MonitoringPeriod": 10,
+        "SendingPeriod": 60,
+        "MaxStorageSize": 52428800
+    },
+    "MetricSettings":
+    {
+        "ProcessorTemperature": 354,
+        "ProcessorTime": 85,
+         "FreeDiskSpace": [{"D":107374182400, "C": 10737418240}],
+         "FreeVirtualMemory": 6442450944
+    }
+}

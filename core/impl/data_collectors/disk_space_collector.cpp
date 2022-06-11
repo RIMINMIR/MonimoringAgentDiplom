@@ -9,7 +9,7 @@ namespace core
 {
 
 DiskSpaceCollector::DiskSpaceCollector(std::shared_ptr<deviceController::DataReceiver> data,
-    std::shared_ptr<std::vector<metricOptions::FreeDiskSpace>> diskOptions)
+    std::shared_ptr<std::vector<common::metricOptions::FreeDiskSpace>> diskOptions)
     : data_{data}
     , diskOptions_{diskOptions}
 {
