@@ -42,9 +42,6 @@ constexpr auto LoadMetrics = u8"SELECT StringData, Date, ComponentId from Metric
 /// \brief запрос метрик из таблицы
 constexpr auto SelectServers = u8"SELECT ServerAdress, Password from Servers;";
 
-/// \brief запрос компонентов из таблицы
-constexpr auto SelectComponents = u8"SELECT ComponentName from Components  WHERE Id = :id;";
-
 /// \brief запрос настроек метрик из таблицы
 constexpr auto SelectMetricSettings = u8"SELECT Settings from MetricSettings;";
 }

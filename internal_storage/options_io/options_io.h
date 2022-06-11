@@ -38,13 +38,11 @@ private:
 
     /// \brief парсинк настроек мониторинга
     /// \param optionsString строка с настройками в json
-    common::MonitoringOptions ParseOptions(const std::string& optionsString);
+    common::MonitoringOptions parseOptions(const std::string& optionsString);
 
     /// \brief парсинк настроек мониторинга
     /// \param optionsString строка с настройками в json
-    common::metricOptions::MetricSettings ParseSettings(const std::string& settingsString);
-
-
+    common::metricOptions::MetricSettings parseSettings(const std::string& settingsString);
 
     std::shared_ptr<DatabaseController> storage_;
 
