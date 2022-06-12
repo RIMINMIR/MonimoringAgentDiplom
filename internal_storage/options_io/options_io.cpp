@@ -92,7 +92,7 @@ void OptionsIo::MemorizeOptionSet(
         std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
         const std::string& path)
 {
-    if(!storage_->CheckMetricsSettings() && storage_->CheckMonitoringOptions() )
+    if(!(storage_->CheckMetricsSettings() && storage_->CheckMonitoringOptions() ))
     {
         try
         {

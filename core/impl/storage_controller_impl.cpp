@@ -7,13 +7,26 @@ namespace core
 {
 
 StorageControllerImpl::StorageControllerImpl()
+    : database_{std::make_shared<internalStorage::DatabaseController>()}
 {
-
+    optionLoader_ = std::make_shared<internalStorage::OptionsIo>(database_);
+    if(!database_->CheckDatabaseIntegrity())
+    {
+        database_->CreateDatabase();
+    }
 }
 
 StorageControllerImpl::~StorageControllerImpl()
 {
 
+}
+
+void StorageControllerImpl::InitOptions(
+        std::shared_ptr<common::MonitoringOptions> monitoringOptions,
+        std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
+        const std::string& path)
+{
+    optionLoader_->MemorizeOptionSet(monitoringOptions, metricSettings, path);
 }
 
 void StorageControllerImpl::StoreOptions(const common::MonitoringOptions& options)

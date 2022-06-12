@@ -19,6 +19,14 @@ set(${PROJECT_NAME}_DIRS
     ${CMAKE_SOURCE_DIR}
 )
 
+set(${PROJECT_NAME}_LIBS
+    ${CONAN_LIBS_GTEST}
+    internal_storage
+    device_controller
+)
+
+
 
 add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
+target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LIBS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_DIRS})

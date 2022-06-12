@@ -10,6 +10,9 @@
 #include <common/event_queue/event_queue.hpp>
 #include <common/event_queue/monitoring_event.h>
 
+#include <internal_storage/database_controller.h>
+#include <internal_storage/options_io/options_io.h>
+
 #include <memory>
 #include <atomic>
 #include <thread>
@@ -25,6 +28,14 @@ public:
 
     /// \brief деструктор контроллера событий
     ~StorageControllerImpl() override;
+
+    /// \brief инициализация настроек из внутреннего хранилища, переданного файла или дефолтных
+    /// \param monitoringOptions настройки мониторинга
+    /// \param metricSettings параметры метрик
+    void InitOptions(
+        std::shared_ptr<common::MonitoringOptions> monitoringOptions,
+        std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
+        const std::string& path = u8"D:/lessons/options.json") override;
 
     /// \brief сохранение настроек мониторинга в хранилище
     /// \param options ссылка на помещаемые данные
@@ -65,6 +76,10 @@ public:
     void RequestMetrics(std::vector<common::MonitoringData>& data) override;
 
 private:
+
+    std::shared_ptr<internalStorage::DatabaseController> database_;
+
+    std::shared_ptr<internalStorage::OptionsIo> optionLoader_;
 
 };
 

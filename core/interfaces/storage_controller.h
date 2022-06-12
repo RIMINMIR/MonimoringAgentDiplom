@@ -7,8 +7,10 @@
 
 #include <common/monitoring_data_structures.h>
 #include <common/monitoring_options.h>
+#include <common/metrics_qulity_options.h>
 
 #include <vector>
+#include <memory>
 
 namespace core
 {
@@ -17,6 +19,14 @@ struct StorageController
 {
     /// \brief деструктор подсистемы монитоинга
     virtual ~StorageController() = default;
+
+    /// \brief инициализация настроек из внутреннего хранилища, переданного файла или дефолтных
+    /// \param monitoringOptions настройки мониторинга
+    /// \param metricSettings параметры метрик
+    virtual void InitOptions(
+        std::shared_ptr<common::MonitoringOptions> monitoringOptions,
+        std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
+        const std::string& path = u8"D:/lessons/options.json") = 0;
 
     /// \brief сохранение настроек мониторинга в хранилище
     /// \param options ссылка на помещаемые данные

@@ -14,6 +14,7 @@
 
 #include <common/core_content.h>
 #include <common/event_queue/event_queue.hpp>
+#include <common/metrics_qulity_options.h>
 
 #include <memory>
 
@@ -52,6 +53,9 @@ private:
 
     /// \brief указатель на структуру настроек мониторинга
     std::shared_ptr<common::MonitoringOptions> monitoringOptions_;
+
+    /// \brief указатель на структуру параметров метрик
+    std::shared_ptr<common::metricOptions::MetricSettings> metricSettings_;
 
 };
 

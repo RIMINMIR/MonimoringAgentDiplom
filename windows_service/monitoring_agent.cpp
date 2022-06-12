@@ -5,6 +5,8 @@
 
 #include "windows_service.h"
 
+#include "dir_helper.h"
+
 #include <common/windows_service_data.h>
 
 /// @brief точка входа в агент мониторинга
@@ -12,6 +14,9 @@
 /// @param argv входные аргументы
 int main(uint32_t argc, char *argv[])
 {
+#if defined(_WIN32)
+    win_service::ChangeWorkingDirectory();
+#endif
     auto dataCollectors = factory::GetCollectorList();
     common::CoreContent content = {};
     content.eventController_ = factory::GetEventController();

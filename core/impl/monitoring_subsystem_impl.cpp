@@ -58,7 +58,7 @@ void MonitoringSubsystemImpl::dataCollecting()
             return;
         }
         std::vector<common::MonitoringData> dataVector = {};
-        for(auto collector:*collectors_)
+        /*for (auto collector : *collectors_)
         {
             deviceState::paramStates subsystemState = deviceState::Unknown;
             auto subsystemData = collector->GetData(subsystemState);
@@ -80,7 +80,7 @@ void MonitoringSubsystemImpl::dataCollecting()
             }
 
 
-        }
+        }*/
 
         storage_->StoreMetrics(dataVector);
     }

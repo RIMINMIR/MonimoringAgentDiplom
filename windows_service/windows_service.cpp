@@ -34,7 +34,7 @@ int StartWindowsService(const std::wstring& serviceName, std::unique_ptr<core::C
     ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTIONW)ServiceMain;
 
     Core = std::move(core);
-
+ 
     if(!StartServiceCtrlDispatcherW(ServiceTable))
     {
         return GetLastError();

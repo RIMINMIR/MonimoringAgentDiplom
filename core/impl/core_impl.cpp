@@ -11,14 +11,10 @@ CoreImpl::CoreImpl(common::CoreContent& content)
     , eventController_{content.eventController_}
     , storageController_{content.storageController_}
     , transportSubsystem_{content.transportSubsystem_}
+    , monitoringOptions_{std::make_shared<common::MonitoringOptions>()}
+    , metricSettings_{ std::make_shared < common::metricOptions::MetricSettings>() }
 {
-    auto monitoringOptions = std::make_shared<common::MonitoringOptions>();
-    monitoringOptions->MonitoringEnabled_ = true;
-    monitoringOptions->MonitoringPeriod_ = 30;
-    monitoringOptions->SendingPeriod_ = 30;
 
-    monitoringSubsystem_->SetMonitoringOptions(monitoringOptions);
-    transportSubsystem_->SetMonitoringOptions(monitoringOptions);
 }
 
 CoreImpl::~CoreImpl()
@@ -28,6 +24,10 @@ CoreImpl::~CoreImpl()
 
 void CoreImpl::Run()
 {
+    storageController_->InitOptions(monitoringOptions_, metricSettings_);
+    monitoringSubsystem_->SetMonitoringOptions(monitoringOptions_);
+    transportSubsystem_->SetMonitoringOptions(monitoringOptions_);
+
     monitoringSubsystem_->Run();
     eventController_->Run();
     transportSubsystem_->Run();
