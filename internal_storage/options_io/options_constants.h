@@ -17,6 +17,17 @@ constexpr auto MonitoringOptions = u8"MonitoringOptions";
 /// \brief имя поля с настройками метрик
 constexpr auto MetricSettings = u8"MetricSettings";
 
+/// \brief имя поля с настройками метрик
+constexpr auto MonitoringEnabled = u8"MonitoringEnabled";
+
+/// \brief имя поля с настройками метрик
+constexpr auto MonitoringPeriod = u8"MonitoringPeriod";
+
+/// \brief имя поля с настройками метрик
+constexpr auto SendingPeriod = u8"SendingPeriod";
+
+constexpr auto StorageSize = u8"MaxStorageSize";
+
 }
 }
 

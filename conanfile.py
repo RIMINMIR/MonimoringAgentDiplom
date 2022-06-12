@@ -12,7 +12,7 @@ class MonitoringAgent(ConanFile):
     requires = (
         "boost/1.72.0",
         "fmt/6.1.2",
-        "rapidjson/1.1.0",
+        "nlohmann_json/3.10.5",
         "gtest/1.11.0",
         'zlib/1.2.12',
         'sqlite3/3.38.1',

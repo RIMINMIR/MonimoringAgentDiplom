@@ -24,7 +24,7 @@ struct MonitoringOptions
     uint32_t SendingPeriod_;
 
     /// \file максимальный размер хранилища
-    uint32_t MaxStorageSize_;
+    uint64_t MaxStorageSize_;
 
 };
 

@@ -7,6 +7,7 @@ set(${PROJECT_NAME}_SOURCES
     device_controller_tests/wmi_controller_test.cpp
     core_tests/subsystem_run.cpp
     internal_storage/storage_test.cpp
+    internal_storage/options_io.cpp
     ${CMAKE_SOURCE_DIR}/common/encoding_helper.cpp
     )
 
