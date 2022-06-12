@@ -25,8 +25,12 @@ set(${PROJECT_NAME}_LIBS
     device_controller
 )
 
+set(PRIVATE_COMPILE_DEFINITIONS
+CMAKE_SOURCE_PATH="${CMAKE_SOURCE_DIR}"
+)
 
 
 add_library(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES})
 target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_LIBS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_DIRS})
+target_compile_definitions(${PROJECT_NAME} PRIVATE ${PRIVATE_COMPILE_DEFINITIONS})

@@ -11,8 +11,14 @@
 #include <gtest/gtest.h>
 #include <fstream>
 
-    const std::string filepath = u8"D:/lessons/options.json";
-     const std::string filepathOut = u8"D:/lessons/ururu.json";
+    /// \brief имя json файла настроек мониторинга
+    const std::string OptionsFileName = u8"/options.json";
+
+    /// \brief путь к json файлу настроек мониторинга
+     const std::string OptionsFilePath = std::string(CMAKE_SOURCE_PATH + OptionsFileName);
+     const std::string filepath = OptionsFilePath;
+     const std::string  binpath = CMAKE_BINPATH;
+     const std::string filepathOut = binpath + "/tests/bin/outfile.json";
      const std::string SettingsForParse  = u8"\
     {\
         \"ProcessorTemperature\": 354,\

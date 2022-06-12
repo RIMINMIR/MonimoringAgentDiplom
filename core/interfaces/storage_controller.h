@@ -15,6 +15,12 @@
 namespace core
 {
 
+/// \brief имя json файла настроек мониторинга
+const std::string OptionsFileName = u8"/options.json";
+
+/// \brief путь к json файлу настроек мониторинга
+const std::string OptionsFilePath = std::string(CMAKE_SOURCE_PATH + OptionsFileName);
+
 struct StorageController
 {
     /// \brief деструктор подсистемы монитоинга
@@ -26,7 +32,7 @@ struct StorageController
     virtual void InitOptions(
         std::shared_ptr<common::MonitoringOptions> monitoringOptions,
         std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
-        const std::string& path = u8"D:/lessons/options.json") = 0;
+        const std::string& path = OptionsFilePath) = 0;
 
     /// \brief сохранение настроек мониторинга в хранилище
     /// \param options ссылка на помещаемые данные

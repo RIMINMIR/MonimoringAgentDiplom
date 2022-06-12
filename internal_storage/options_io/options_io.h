@@ -27,7 +27,7 @@ public:
     void MemorizeOptionSet(
         std::shared_ptr<common::MonitoringOptions> monitoringOptions,
         std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
-        const std::string& path = u8"D:/lessons/options.json");
+        const std::string& path);
 
     /// \brief чтение настроек из json файла
     /// \param path путь к json файлу

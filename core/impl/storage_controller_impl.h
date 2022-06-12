@@ -35,7 +35,7 @@ public:
     void InitOptions(
         std::shared_ptr<common::MonitoringOptions> monitoringOptions,
         std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
-        const std::string& path = u8"D:/lessons/options.json") override;
+        const std::string& path = OptionsFilePath) override;
 
     /// \brief сохранение настроек мониторинга в хранилище
     /// \param options ссылка на помещаемые данные
