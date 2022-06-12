@@ -42,6 +42,13 @@ constexpr auto ProcessorTime = u8"ProcessorTime";
 /// \brief температура процессора
 constexpr auto ProcessorTemperature = u8"ProcessorTemperature";
 
+constexpr auto DefaultMetricsSettings = u8"\
+    {\
+        \"ProcessorTemperature\": 354,\
+        \"ProcessorTime\": 85,\
+         \"FreeDiskSpace\": {\"D\":107374182400, \"C\": 10737418240}, \"FreeVirtualMemory\": 6442450943\
+    }";
+
 }
 }
 

@@ -17,9 +17,17 @@ namespace internalStorage
 class OptionsIo
 {
 public:
+
     /// \brief конструктор
     /// \param storage контроллер внутреннего хранилища
     OptionsIo(std::shared_ptr<DatabaseController> storage);
+
+    /// \brief загрузка настроек в память
+    /// \param path путь к файлу с настройками
+    void MemorizeOptionSet(
+        std::shared_ptr<common::MonitoringOptions> monitoringOptions,
+        std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
+        const std::string& path = u8"D:/lessons/options.json");
 
     /// \brief чтение настроек из json файла
     /// \param path путь к json файлу
@@ -30,7 +38,6 @@ public:
     void WriteOptions(const std::string& path);
 
     /// \brief установка в хранилище настроек по умолчанию
-    /// \param path путь к json файлу
     void DefaultOptions();
 
     /// \brief парсинк настроек мониторинга

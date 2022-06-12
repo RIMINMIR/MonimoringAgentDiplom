@@ -79,4 +79,20 @@ uint64_t DatabaseController::GetDatabaseSize()
     return size;
 }
 
+
+bool DatabaseController::CheckMonitoringOptions()
+{
+    int count = 0;
+    *base_<<fmt::format(requests::select::SelectStringsCount, constants::OptionsTableName), soci::into(count);
+    return count >0;
+}
+
+bool DatabaseController::CheckMetricsSettings()
+{
+    int count = 0;
+    *base_<<fmt::format(requests::select::SelectStringsCount, constants::MetricSettingsTableName), soci::into(count);
+    return count >0;
+}
+
+
 }

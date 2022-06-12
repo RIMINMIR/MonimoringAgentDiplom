@@ -31,6 +31,12 @@ public:
     /// \brief проверка размера базы данных
     bool CheckDatabaseSize();
 
+    /// \brief проверка наличия настроек мониторинга в базе
+    bool CheckMonitoringOptions();
+
+    /// \brief проверка наличия настроек мониторинга в базе
+    bool CheckMetricsSettings();
+
     /// \brief запрос размера базы данных
     uint64_t GetDatabaseSize();
 

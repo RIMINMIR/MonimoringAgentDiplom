@@ -80,4 +80,36 @@ common::metricOptions::MetricSettings OptionsIo::parseSettings(const std::string
     return resultSettings;
 }
 
+void OptionsIo::DefaultOptions()
+{
+    common::MonitoringOptions options =  {true, 10, 180, 52428800 };
+    storage_->StoreMonitoringOptions(options);
+    storage_->StoreMetricSettings(constants::DefaultMetricsSettings);
+}
+
+void OptionsIo::MemorizeOptionSet(
+        std::shared_ptr<common::MonitoringOptions> monitoringOptions,
+        std::shared_ptr<common::metricOptions::MetricSettings> metricSettings,
+        const std::string& path)
+{
+    if(!storage_->CheckMetricsSettings() && storage_->CheckMonitoringOptions() )
+    {
+        try
+        {
+            ReadOptions(path);
+
+        }
+        catch(const std::exception&)
+        {
+            DefaultOptions();
+        }
+
+    }
+
+    *monitoringOptions = storage_->LoadMonitoringOptions();
+    auto settingsString = storage_->GetMetricSettings();
+    *metricSettings =  parseSettings(settingsString);
+
+}
+
 }
