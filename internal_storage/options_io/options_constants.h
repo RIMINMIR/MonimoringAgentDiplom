@@ -26,7 +26,21 @@ constexpr auto MonitoringPeriod = u8"MonitoringPeriod";
 /// \brief имя поля с настройками метрик
 constexpr auto SendingPeriod = u8"SendingPeriod";
 
+/// \brief максимальный размер хранилища
 constexpr auto StorageSize = u8"MaxStorageSize";
+
+
+/// \brief свободная оперативная память
+constexpr auto FreeVirtualMemory = u8"FreeVirtualMemory";
+
+/// \brief свободное место на дискке
+constexpr auto FreeDiskSpace = u8"FreeDiskSpace";
+
+/// \brief загрузка процессора
+constexpr auto ProcessorTime = u8"ProcessorTime";
+
+/// \brief температура процессора
+constexpr auto ProcessorTemperature = u8"ProcessorTemperature";
 
 }
 }

@@ -64,4 +64,20 @@ void OptionsIo::WriteOptions(const std::string& path)
     f.close();
 
 }
+
+common::metricOptions::MetricSettings OptionsIo::parseSettings(const std::string& settingsString)
+{
+    common::metricOptions::MetricSettings resultSettings = {};
+    auto settingsObj = nlohmann::json::parse(settingsString);
+    resultSettings.freeMemory.MinimalFreeMemory = settingsObj[constants::FreeVirtualMemory].get<uint64_t>();
+    resultSettings.maxTemperature.MaxProcessorTemperature = settingsObj[constants::ProcessorTemperature].get<uint16_t>();
+    resultSettings.processorTime.MaxProcessorTime = settingsObj[constants::ProcessorTime].get<uint16_t>();
+    auto tempObject = settingsObj[constants::FreeDiskSpace].get<nlohmann::json::object_t>();
+    for(auto& space:tempObject)
+    {
+        resultSettings.freeSpace.push_back(common::metricOptions::FreeDiskSpace{space.first, space.second});
+    }
+    return resultSettings;
+}
+
 }

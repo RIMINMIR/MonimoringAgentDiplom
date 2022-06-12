@@ -16,10 +16,11 @@ enum MetricIds
 {
     ProcessorTemperature,
     FreeDiskSpace,
-    FreeVirtualMemory
+    FreeVirtualMemory,
+    ProcessorTime
 };
 
-const std::string MetricNames[] = {"ProcessorTemperature", "FreeDiskSpace", "FreeVirtualMemory"};
+const std::string MetricNames[] = {"ProcessorTemperature", "FreeDiskSpace", "FreeVirtualMemory", "ProcessorTime"};
 
 }
 }

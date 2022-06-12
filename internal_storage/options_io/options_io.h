@@ -33,19 +33,13 @@ public:
     /// \param path путь к json файлу
     void DefaultOptions();
 
-
-private:
-
-    /// \brief парсинк настроек мониторинга
-    /// \param optionsString строка с настройками в json
-    common::MonitoringOptions parseOptions(const std::string& optionsString);
-
     /// \brief парсинк настроек мониторинга
     /// \param optionsString строка с настройками в json
     common::metricOptions::MetricSettings parseSettings(const std::string& settingsString);
 
-    std::shared_ptr<DatabaseController> storage_;
+private:
 
+    std::shared_ptr<DatabaseController> storage_;
 };
 
 }

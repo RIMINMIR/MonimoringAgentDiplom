@@ -34,6 +34,12 @@ namespace metricOptions
         uint16_t MaxProcessorTemperature;
     };
 
+      /// \brief максимальная процентная загрузка процессора
+    struct MaxProcessorTime
+    {
+        uint16_t MaxProcessorTime;
+    };
+
      /// \brief общие настройки метрик
     struct MetricSettings
     {
@@ -42,7 +48,11 @@ namespace metricOptions
         FreeVirtualMemory freeMemory;
 
         MaxProcessorTemperature maxTemperature;
+
+        MaxProcessorTime processorTime;
+
     };
+
 
 
 

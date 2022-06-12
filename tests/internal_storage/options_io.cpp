@@ -13,6 +13,12 @@
 
     const std::string filepath = u8"D:/lessons/options.json";
      const std::string filepathOut = u8"D:/lessons/ururu.json";
+     const std::string SettingsForParse  = u8"\
+    {\
+        \"ProcessorTemperature\": 354,\
+        \"ProcessorTime\": 85,\
+         \"FreeDiskSpace\": {\"D\":107374182400, \"C\": 10737418240}, \"FreeVirtualMemory\": 6442450943\
+    }";
 /// \brief проверка создания базы и таблиц
 TEST( OptionsIoTests, ReadTest )
 {
@@ -28,6 +34,7 @@ TEST( OptionsIoTests, WriteTest )
     internalStorage::OptionsIo io(controller);
     ASSERT_NO_THROW(io.WriteOptions(filepathOut));
 }
+
 using namespace internalStorage;
 /// \brief проверка создания базы и таблиц
 TEST( OptionsIoTests, ValueDiffTest )
@@ -61,4 +68,16 @@ TEST( OptionsIoTests, ValueDiffTest )
     ASSERT_EQ(storOpt.MonitoringEnabled_, monOptions.MonitoringEnabled_);
     ASSERT_EQ(storOpt.MonitoringPeriod_, monOptions.MonitoringPeriod_);
     ASSERT_EQ(storOpt.SendingPeriod_, monOptions.SendingPeriod_);
+}
+
+/// \brief проверка создания базы и таблиц
+TEST( OptionsIoTests, ParseSettingsTest )
+{
+    auto controller = std::make_shared<internalStorage::DatabaseController>();
+    internalStorage::OptionsIo io(controller);
+    common::metricOptions::MetricSettings parsedSet = {};
+    ASSERT_NO_THROW(parsedSet = io.parseSettings(SettingsForParse));
+    ASSERT_EQ(parsedSet.freeMemory.MinimalFreeMemory, 6442450943);
+    ASSERT_EQ(parsedSet.maxTemperature.MaxProcessorTemperature,354);
+    ASSERT_EQ(parsedSet.processorTime.MaxProcessorTime, 85);
 }

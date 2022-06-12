@@ -11,7 +11,7 @@
     {
         "ProcessorTemperature": 354,
         "ProcessorTime": 85,
-         "FreeDiskSpace": [{"D":107374182400, "C": 10737418240}],
+         "FreeDiskSpace": {"D":107374182400, "C": 10737418240},
          "FreeVirtualMemory": 6442450944
     }
 }
