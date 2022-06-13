@@ -15,5 +15,9 @@
      "MonitoringEnabled": true,
      "MonitoringPeriod": 10,
      "SendingPeriod": 60
-    }
+    },
+    "Servers": [{
+        "ServerAdress": "localhost",
+        "Password": ""
+       }]
    }

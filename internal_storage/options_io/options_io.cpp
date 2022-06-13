@@ -35,12 +35,19 @@ void OptionsIo::ReadOptions(const std::string& path)
 
     nlohmann::json jsonFile = nlohmann::json::parse(options);
     auto metricSettings = jsonFile[constants::MetricSettings].dump();
-    common::MonitoringOptions monOptions  = {
-        static_cast<bool>(jsonFile[constants::MonitoringOptions][constants::MonitoringEnabled].get<int>()),
-        static_cast<uint32_t>(jsonFile[constants::MonitoringOptions][constants::MonitoringPeriod].get<int>()),
-        static_cast<uint32_t>(jsonFile[constants::MonitoringOptions][constants::SendingPeriod].get<int>()),
-        static_cast<uint32_t>(jsonFile[constants::MonitoringOptions][constants::StorageSize].get<int>())
+    common::MonitoringOptions monOptions  =
+        {
+            static_cast<bool>(jsonFile[constants::MonitoringOptions][constants::MonitoringEnabled].get<int>()),
+            static_cast<uint32_t>(jsonFile[constants::MonitoringOptions][constants::MonitoringPeriod].get<int>()),
+            static_cast<uint32_t>(jsonFile[constants::MonitoringOptions][constants::SendingPeriod].get<int>()),
+            static_cast<uint32_t>(jsonFile[constants::MonitoringOptions][constants::StorageSize].get<int>())
         };
+        for(auto conn:jsonFile[constants::Servers])
+        {
+            common::ConnectionInfo temp = {conn[constants::Adress].get<std::string>(), conn[constants::Password].get<std::string>()};
+            storage_->StoreConnection(temp);
+        }
+
     storage_->StoreMetricSettings(metricSettings);
     storage_->StoreMonitoringOptions(monOptions);
 }
@@ -50,7 +57,12 @@ void OptionsIo::WriteOptions(const std::string& path)
     std::ofstream f(path);
     auto metricSettings = storage_->GetMetricSettings();
     auto monitoringOptions = storage_->LoadMonitoringOptions();
+    auto connections = storage_->RequestConnections();
     nlohmann::json jsonFile = {};
+    for (auto i:connections)
+    {
+        jsonFile[constants::Servers].push_back({i.Hostname_, i.Password_});
+    }
     jsonFile[constants::MonitoringOptions] = {
         {constants::MonitoringEnabled, monitoringOptions.MonitoringEnabled_},
         {constants::MonitoringPeriod, monitoringOptions.MonitoringPeriod_},
@@ -85,6 +97,21 @@ void OptionsIo::DefaultOptions()
     common::MonitoringOptions options =  {true, 10, 180, 52428800 };
     storage_->StoreMonitoringOptions(options);
     storage_->StoreMetricSettings(constants::DefaultMetricsSettings);
+    try
+    {
+        auto conn =  storage_->RequestConnections();
+        if(conn.size() == 0)
+        {
+            common::ConnectionInfo conn = {"localhost", ""};
+            storage_->StoreConnection(conn);
+        }
+    }
+    catch(const std::exception& )
+    {
+        common::ConnectionInfo conn = {"localhost", ""};
+        storage_->StoreConnection(conn);
+    }
+
 }
 
 void OptionsIo::MemorizeOptionSet(

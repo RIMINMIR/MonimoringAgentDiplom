@@ -42,6 +42,14 @@ constexpr auto ProcessorTime = u8"ProcessorTime";
 /// \brief температура процессора
 constexpr auto ProcessorTemperature = u8"ProcessorTemperature";
 
+/// \brief температура процессора
+constexpr auto Adress = u8"ServerAdress";
+
+/// \brief температура процессора
+constexpr auto Password = u8"Password";
+
+constexpr auto Servers = u8"Servers";
+
 constexpr auto DefaultMetricsSettings = u8"\
     {\
         \"ProcessorTemperature\": 354,\

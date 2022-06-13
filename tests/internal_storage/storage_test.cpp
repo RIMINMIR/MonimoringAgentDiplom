@@ -64,6 +64,7 @@ TEST( StorageTests, StoreServers )
 
    ASSERT_EQ(results[0].Hostname_, server.Hostname_);
    ASSERT_EQ(results[0].Password_, server.Password_);
+   controller.RemoveConnection(server);
 }
 
 
