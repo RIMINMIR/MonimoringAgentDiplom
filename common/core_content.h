@@ -29,6 +29,12 @@ struct CoreContent
     /// \brief интерфейс транспортной подсистемы
     std::shared_ptr<core::TransportSubsystem> transportSubsystem_;
 
+    /// \brief указатель на настройки мониторинга
+    std::shared_ptr<common::MonitoringOptions> monitoringOptions_;
+
+    /// \brief указатель на настройки метрик
+    std::shared_ptr<common::metricOptions::MetricSettings> metricSettings_;
+
 };
 
 }

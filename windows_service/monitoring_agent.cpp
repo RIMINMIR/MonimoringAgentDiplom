@@ -17,8 +17,13 @@ int main(uint32_t argc, char *argv[])
 #if defined(_WIN32)
     win_service::ChangeWorkingDirectory();
 #endif
-    auto dataCollectors = factory::GetCollectorList();
+
+
     common::CoreContent content = {};
+    content.metricSettings_ = std::make_shared<common::metricOptions::MetricSettings>();
+    content.monitoringOptions_ = std::make_shared<common::MonitoringOptions>();
+    auto dataCollectors = factory::GetCollectorList(content.metricSettings_);
+
     content.eventController_ = factory::GetEventController();
     content.storageController_ = factory::GetStorageController();
     content.monitoringSubsystem_ = factory::GetMonitoringSubsystem(content.eventController_, dataCollectors, content.storageController_);

@@ -16,8 +16,8 @@ MonitoringSubsystemImpl::MonitoringSubsystemImpl(std::shared_ptr<EventController
     std::shared_ptr<core::StorageController> storage)
 : events_{controller}
 , storage_{storage}
+, collectors_{collectors}
 {
-
 }
 
 MonitoringSubsystemImpl::~MonitoringSubsystemImpl()
@@ -58,7 +58,7 @@ void MonitoringSubsystemImpl::dataCollecting()
             return;
         }
         std::vector<common::MonitoringData> dataVector = {};
-        /*for (auto collector : *collectors_)
+        for (auto collector : *collectors_)
         {
             deviceState::paramStates subsystemState = deviceState::Unknown;
             auto subsystemData = collector->GetData(subsystemState);
@@ -80,7 +80,7 @@ void MonitoringSubsystemImpl::dataCollecting()
             }
 
 
-        }*/
+        }
 
         storage_->StoreMetrics(dataVector);
     }

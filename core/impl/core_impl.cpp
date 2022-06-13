@@ -11,8 +11,8 @@ CoreImpl::CoreImpl(common::CoreContent& content)
     , eventController_{content.eventController_}
     , storageController_{content.storageController_}
     , transportSubsystem_{content.transportSubsystem_}
-    , monitoringOptions_{std::make_shared<common::MonitoringOptions>()}
-    , metricSettings_{ std::make_shared < common::metricOptions::MetricSettings>() }
+    , monitoringOptions_{content.monitoringOptions_}
+    , metricSettings_{ content.metricSettings_}
 {
 
 }

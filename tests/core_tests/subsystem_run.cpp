@@ -26,8 +26,8 @@ TEST( SubsystemRunTests, MonitoringSubsystemRunTest )
     auto eventController = factory::GetEventController();
 
     auto storageController = factory::GetStorageController();
-
-    auto collectors = factory::GetCollectorList();
+    auto settings = std::make_shared<common::metricOptions::MetricSettings>();
+    auto collectors = factory::GetCollectorList(settings );
 
     auto monitoringSys = factory::GetMonitoringSubsystem(std::move(eventController), collectors, std::move(storageController));
 
@@ -59,8 +59,12 @@ TEST( SubsystemRunTests, TransportSubsystemRunTest )
 
 TEST( SubsystemRunTests, CoreRunTest )
 {
-    auto dataCollectors = factory::GetCollectorList();
+    auto settings = std::make_shared<common::metricOptions::MetricSettings>();
+    auto options = std::make_shared<common::MonitoringOptions>();
+    auto dataCollectors = factory::GetCollectorList(settings );
     common::CoreContent content = {};
+    content.monitoringOptions_ = options;
+    content.metricSettings_ = settings;
     content.eventController_ = factory::GetEventController();
     content.storageController_ = factory::GetStorageController();
     content.monitoringSubsystem_ = factory::GetMonitoringSubsystem(content.eventController_, dataCollectors, content.storageController_);

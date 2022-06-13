@@ -9,6 +9,10 @@
 #include <core/impl/storage_controller_impl.h>
 #include <core/impl/transport_subsystem_impl.h>
 
+#include <core/impl/data_collectors/disk_space_collector.h>
+
+#include <device_controller/data_receiver.h>
+
 namespace factory
 {
 
@@ -43,10 +47,12 @@ std::unique_ptr<core::TransportSubsystem> GetTransportSubsystem(std::shared_ptr<
     return std::move(subsystem);
 }
 
-core::CollectorList GetCollectorList()
+core::CollectorList GetCollectorList(std::shared_ptr<common::metricOptions::MetricSettings> settings)
 {
     auto list = std::make_shared< std::vector< std::shared_ptr< core::DataCollector > > >();
-
+    auto dataDeceiver = std::make_shared<deviceController::DataReceiver>();
+    std::shared_ptr< core::DataCollector > discSpaceCollector = std::make_shared<core::DiskSpaceCollector>(dataDeceiver, settings);
+    list->push_back(discSpaceCollector);
     return list;
 }
 

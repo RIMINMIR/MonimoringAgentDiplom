@@ -42,7 +42,7 @@ std::unique_ptr<core::StorageController> GetStorageController();
 std::unique_ptr<core::TransportSubsystem> GetTransportSubsystem(std::shared_ptr<core::StorageController> storage);
 
 /// \brief получение вектора сборщиков данных
-core::CollectorList GetCollectorList();
+core::CollectorList GetCollectorList(std::shared_ptr<common::metricOptions::MetricSettings> settings);
 
 }
 #endif

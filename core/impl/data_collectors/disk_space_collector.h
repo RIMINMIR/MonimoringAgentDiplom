@@ -21,7 +21,7 @@ public:
     /// \brief конструктор
     /// \param data указатель на wmi сборщик данных
     DiskSpaceCollector(std::shared_ptr<deviceController::DataReceiver> data,
-        std::shared_ptr<std::vector<common::metricOptions::FreeDiskSpace>> diskOptions);
+        std::shared_ptr<common::metricOptions::MetricSettings> diskOptions);
 
     /// \brief деструктор контроллера событий
     ~DiskSpaceCollector() override;
@@ -40,7 +40,7 @@ private:
     bool check(std::shared_ptr<std::vector<std::string>> data);
 
     /// \brief вектор настроек для каждого диска
-    std::shared_ptr<std::vector<common::metricOptions::FreeDiskSpace>> diskOptions_;
+    std::shared_ptr<common::metricOptions::MetricSettings> diskOptions_;
 
     // \brief сборщик данных через wmi
     std::shared_ptr<deviceController::DataReceiver> data_;

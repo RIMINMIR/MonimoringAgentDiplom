@@ -9,7 +9,7 @@ namespace core
 {
 
 DiskSpaceCollector::DiskSpaceCollector(std::shared_ptr<deviceController::DataReceiver> data,
-    std::shared_ptr<std::vector<common::metricOptions::FreeDiskSpace>> diskOptions)
+    std::shared_ptr<common::metricOptions::MetricSettings> diskOptions)
     : data_{data}
     , diskOptions_{diskOptions}
 {
@@ -65,7 +65,7 @@ bool DiskSpaceCollector::check(std::shared_ptr<std::vector<std::string>> data)
 
        auto DiscName = discSize.substr(0,spacePlace-1);
 
-       for(auto option:*diskOptions_)
+       for(auto option:(*diskOptions_).freeSpace)
        {
            if(option.DiscName == DiscName)
            {
