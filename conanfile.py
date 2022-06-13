@@ -10,7 +10,6 @@ class MonitoringAgent(ConanFile):
     generators = "cmake"
     exports_sources = "src/*"
     requires = (
-        "boost/1.72.0",
         "fmt/6.1.2",
         "nlohmann_json/3.10.5",
         "gtest/1.11.0",

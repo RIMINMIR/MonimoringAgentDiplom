@@ -56,6 +56,10 @@ public:
     /// \param data ссылка на вектор загружаемых данных
     std::vector<common::MonitoringData> LoadMetrics();
 
+    /// \brief выгрузка вектора данных мониторинга из хранилища
+    /// \param data ссылка на вектор загружаемых данных
+    std::vector<common::MonitoringData> GetMetrics();
+
     /// \brief сохранение адреса сервера мониторинга
     /// \param connection ссылка на данные о сервере мониторинга
     void StoreConnection(const common::ConnectionInfo & conection);
@@ -63,6 +67,10 @@ public:
     /// \brief загрузка данных о серверах мониторинга
     /// \param connections ссылка на загружаемые данные
     std::vector<common::ConnectionInfo> RequestConnections();
+
+    /// \brief удаление данных о сервере
+    /// \param connection данные для удаления
+    void RemoveConnection(const common::ConnectionInfo & conection);
 
     /// \brief настройки метрик
     /// \param settings настройки в строковом виде
@@ -75,6 +83,10 @@ public:
     /// \brief удаление настроек метрик из хранилища
     /// \param id идентификатор компонента
     void DeleteMetricSettings();
+
+
+    /// \brief ротация записей в таблице
+    void Rotate(const uint32_t& number);
 
 
 

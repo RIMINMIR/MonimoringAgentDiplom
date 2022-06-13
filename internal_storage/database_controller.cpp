@@ -95,4 +95,9 @@ bool DatabaseController::CheckMetricsSettings()
 }
 
 
+void DatabaseController::Rotate(const uint32_t& number)
+{
+    *base_<<requests::delete_::RotateMetrics, soci::use(number);
+}
+
 }

@@ -61,7 +61,7 @@ void DatabaseController::StoreMetrics(const std::vector<common::MonitoringData>&
     {
         stringData.push_back(record.stringData_);
         date.push_back(static_cast<int>(record.date));
-        metricId.push_back(static_cast<int>(record.metrincName_));
+        metricId.push_back(static_cast<int>(record.metricName_));
     }
 
     *base_ << requests::insert::InsertMetrics, soci::use(stringData), soci::use(date), soci::use(metricId);
@@ -82,12 +82,33 @@ std::vector<common::MonitoringData> DatabaseController::LoadMetrics()
       common::MonitoringData tempData = {};
       tempData.stringData_ = stringData[i];
       tempData.date = date[i];
-      tempData.metrincName_ = static_cast<common::collectingMetrics::MetricIds>(metricId[i]);
+      tempData.metricName_ = static_cast<common::collectingMetrics::MetricIds>(metricId[i]);
 
       data.push_back(tempData);
     }
 
     *base_ << fmt::format(requests::delete_::ClearTable, constants::MetricTableName);
+    return data;
+}
+
+std::vector<common::MonitoringData> DatabaseController::GetMetrics()
+{
+    std::vector<common::MonitoringData> data = {};
+    int storageSize = 0;
+    *base_ << fmt::format(requests::select::SelectStringsCount, constants::MetricTableName), soci::into(storageSize);
+    std::vector<std::string> stringData(storageSize);
+    std::vector<int> date(storageSize);
+    std::vector<int> metricId(storageSize);
+    *base_ << requests::select::LoadMetrics, soci::into(stringData), soci::into(date), soci::into(metricId);
+    for (int i =0; i < stringData.size(); i++)
+    {
+      common::MonitoringData tempData = {};
+      tempData.stringData_ = stringData[i];
+      tempData.date = date[i];
+      tempData.metricName_ = static_cast<common::collectingMetrics::MetricIds>(metricId[i]);
+
+      data.push_back(tempData);
+    }
     return data;
 }
 
@@ -116,6 +137,11 @@ std::vector<common::ConnectionInfo> DatabaseController::RequestConnections()
     return data;
 
 }
+
+ void DatabaseController::RemoveConnection(const common::ConnectionInfo & connection)
+ {
+    *base_ << fmt::format(requests::delete_::DeleteServer, connection.Hostname_);
+ }
 
 
 void DatabaseController::StoreMetricSettings(const std::string& settings)

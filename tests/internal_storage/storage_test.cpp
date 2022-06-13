@@ -41,13 +41,13 @@ TEST( StorageTests, StoreMetricsTest )
    internalStorage::DatabaseController controller;
    common::MonitoringData metric = {};
    metric.date = 50;
-   metric.metrincName_ = common::collectingMetrics::FreeDiskSpace;
+   metric.metricName_ = common::collectingMetrics::FreeDiskSpace;
    metric.stringData_ = u8"320";
    std::vector<common::MonitoringData> metrics = {metric};
    controller.StoreMetrics(metrics);
    auto results = controller.LoadMetrics();
    ASSERT_EQ(results[0].date, metric.date);
-   ASSERT_EQ(results[0].metrincName_, metric.metrincName_);
+   ASSERT_EQ(results[0].metricName_, metric.metricName_);
    ASSERT_EQ(results[0].stringData_, metric.stringData_);
 
 }

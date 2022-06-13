@@ -84,6 +84,9 @@ constexpr auto ClearTable = u8"delete from {0}";
 
 /// \brief обновление существующих опций
 constexpr auto DeleteServer = u8"DELETE FROM Servers WHERE ServerAdress = {0}";
+
+/// \brief обновление существующих опций
+constexpr auto RotateMetrics = u8"DELETE FROM Metrics WHERE Id IN (SELECT Id FROM Metrics ORDER BY id ASC LIMIT :num)";
 }
 
 

@@ -77,6 +77,9 @@ public:
 
 private:
 
+    /// \brief проверка размера базы
+    bool sizeCheck();
+
     std::shared_ptr<internalStorage::DatabaseController> database_;
 
     std::shared_ptr<internalStorage::OptionsIo> optionLoader_;

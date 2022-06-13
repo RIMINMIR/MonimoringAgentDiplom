@@ -18,7 +18,7 @@ struct MonitoringData
     std::string stringData_;
 
     /// \file идентификатор собранной метрики
-    common::collectingMetrics::MetricIds metrincName_;
+    common::collectingMetrics::MetricIds metricName_;
 
     /// \file дата сбора данных в виде числа
     uint64_t date;

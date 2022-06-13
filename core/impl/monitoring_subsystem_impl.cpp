@@ -72,7 +72,7 @@ void MonitoringSubsystemImpl::dataCollecting()
             {
                common::MonitoringData dataStruct = {};
                dataStruct.stringData_ = subsystemData;
-               dataStruct.metrincName_ = collector->GetMetricName();
+               dataStruct.metricName_ = collector->GetMetricName();
                dataStruct.date = time(NULL);
                /// \todo доделать установку текущей даты и сбор имени метрики
 
